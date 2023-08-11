@@ -3,7 +3,6 @@ import Borders from "./border";
 import Colors from "./colors";
 import Spacing from "./spacing";
 import { FontSize } from "./size";
-import { fontSizing } from "@utils/platform";
 
 const theme = createTheme({
   colors: {
@@ -93,13 +92,13 @@ const theme = createTheme({
     },
     TitleMedium: {
       fontSize: FontSize.s,
-      fontFamily: "CairoMedium",
+      fontFamily: "CairoReg",
       letterSpacing: 0.15,
       color: "text",
     },
     TitleSmall: {
       fontSize: FontSize["2xs"],
-      fontFamily: "CairoMedium",
+      fontFamily: "CairoReg",
       letterSpacing: 0.1,
       color: "text",
     },
@@ -123,19 +122,19 @@ const theme = createTheme({
     },
     LabelLarge: {
       fontSize: FontSize["2xs"],
-      fontFamily: "CairoMedium",
+      fontFamily: "CairoReg",
       letterSpacing: 0.1,
       color: "text",
     },
     LabelMedium: {
       fontSize: FontSize["3xs"],
-      fontFamily: "CairoMedium",
+      fontFamily: "CairoReg",
       letterSpacing: 0.5,
       color: "text",
     },
     LabelSmall: {
       fontSize: FontSize["4xs"],
-      fontFamily: "CairoMedium",
+      fontFamily: "CairoReg",
       letterSpacing: 0.5,
       color: "text",
     },
