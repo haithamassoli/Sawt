@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "template-expo-router",
-    "slug": "template-expo-router",
-    "scheme": "template-expo-router",
+    "name": "صوت",
+    "slug": "sawt",
+    "scheme": "sawt",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,7 @@
     "ios": {
       "buildNumber": "0.1.0",
       "supportsTablet": true,
-      "bundleIdentifier": "com.haithamassoli.kheir"
+      "bundleIdentifier": "com.haithamassoli.sawt"
     },
     "android": {
       "versionCode": 1,
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.haithamassoli.templateexporouter"
+      "package": "com.haithamassoli.sawt"
     },
     "plugins": [
       [
