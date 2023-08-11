@@ -50,13 +50,12 @@
     },
     "extra": {
       "firebase": {
-        "apiKey": "",
-        "authDomain": "",
-        "projectId": "",
-        "storageBucket": "",
-        "messagingSenderId": "",
-        "appId": "",
-        "measurementId": ""
+        "apiKey": "AIzaSyC9EhXED9zGPNbS66gGlMKH7rgEBtVu5x8",
+        "authDomain": "sawt-jo.firebaseapp.com",
+        "projectId": "sawt-jo",
+        "storageBucket": "sawt-jo.appspot.com",
+        "messagingSenderId": "538339777554",
+        "appId": "1:538339777554:web:ef5efccf3ef1b36dcd0ccb"
       }
     }
   }
