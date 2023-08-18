@@ -22,7 +22,7 @@ import {
   TextInput as PaperTextInput,
 } from "react-native-paper";
 import { ThemeProp } from "react-native-paper/lib/typescript/src/types";
-import theme, { ReText, darkTheme } from "@styles/theme";
+import theme, { Box, ReText, darkTheme } from "@styles/theme";
 import Colors from "@styles/colors";
 import {
   I18nManager,
@@ -37,7 +37,6 @@ import {
   LightNavigationColors,
 } from "@styles/navigation";
 import { getDataFromStorage } from "@utils/helper";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -60,7 +59,7 @@ const queryClient = new QueryClient({
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`
-  initialRouteName: "(home)/index",
+  initialRouteName: "(drawer)",
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -182,15 +181,13 @@ export default function RootLayout() {
           <ThemeProvider
             value={isDark ? DarkNavigationColors : LightNavigationColors}
           >
-            <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+            <Box flex={1} onLayout={onLayoutRootView}>
               <Stack
                 screenOptions={{
                   headerShown: false,
                 }}
-              >
-                <Stack.Screen name="(home)/index" />
-              </Stack>
-            </SafeAreaView>
+              />
+            </Box>
           </ThemeProvider>
         </PaperProvider>
       </ReThemeProvider>
