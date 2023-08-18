@@ -58,7 +58,7 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="about"
         options={{
-          title: "عن تطبيق خير",
+          title: "عن تطبيق صوت",
           drawerIcon: ({ color, size }) => (
             <Feather name="info" size={size} color={color} />
           ),

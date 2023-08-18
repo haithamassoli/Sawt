@@ -1,19 +1,13 @@
 import { useState, useRef, memo } from "react";
-import {
-  View,
-  ScrollView,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import { useEffect } from "react";
 import { useTheme } from "@shopify/restyle";
 import Colors from "@styles/colors";
 import { hs, ms, vs } from "@utils/platform";
 import { Theme } from "@styles/theme";
 import { useStore } from "@zustand/store";
-import { height, width } from "@utils/helper";
+import { blurhash, height, width } from "@utils/helper";
+import { Image } from "expo-image";
 
 type Props = {
   images: any[];
@@ -65,27 +59,24 @@ const ImagesCarousel = ({ images }: Props) => {
       >
         {images.length === 0 && (
           <Image
-            source={require("@assets/images/carousel/1.png")}
+            source={require("@assets/images/carousel/2.png")}
+            contentFit="cover"
+            placeholder={blurhash}
+            transition={400}
             style={styles.image}
           />
         )}
-        {images.map((image, index) => (
-          <TouchableOpacity
-            onPress={() => {
-              if (image.url) {
-                Linking.openURL(image?.url);
-              }
-            }}
-            key={index}
-            activeOpacity={image.url ? 0.5 : 1}
-          >
+        {Array.isArray(images) &&
+          images.map((image, index) => (
             <Image
+              key={index}
               source={image}
-              defaultSource={require("@assets/images/carousel/1.png")}
+              transition={400}
+              placeholder={blurhash}
+              placeholderContentFit="cover"
               style={styles.image}
             />
-          </TouchableOpacity>
-        ))}
+          ))}
       </ScrollView>
       <View style={styles.dotsContainer}>
         {images.length === 0 && (
@@ -111,7 +102,7 @@ const ImagesCarousel = ({ images }: Props) => {
                 backgroundColor:
                   index === selectedIndex ? colors.primary7 : colors.black6,
                 width:
-                  index === images.length - selectedIndex - 1 ? ms(24) : ms(8),
+                  index === images.length - selectedIndex - 1 ? hs(24) : ms(8),
               },
             ]}
           />
@@ -129,7 +120,6 @@ const styles = StyleSheet.create({
     height: vs(232),
   },
   image: {
-    resizeMode: "cover",
     borderRadius: ms(12),
     width: width - hs(32),
     height: height * 0.24,
@@ -137,14 +127,14 @@ const styles = StyleSheet.create({
   dotsContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginTop: vs(8),
     zIndex: 100,
   },
   dot: {
-    height: vs(8),
+    marginTop: vs(-24),
+    height: ms(8),
     borderRadius: ms(6),
     borderWidth: ms(4),
-    margin: ms(4),
+    marginLeft: hs(4),
     backgroundColor: Colors.primary6,
   },
 });

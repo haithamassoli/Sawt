@@ -16,6 +16,7 @@ import { useState } from "react";
 import { registerMutation } from "@apis/auth";
 import Loading from "@components/loading";
 import CustomButton from "@components/ui/customButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingUp = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const SingUp = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1 }}>
       <Snackbar />
       <Box flex={1} paddingHorizontal="hl" paddingTop="vl">
         <Feather
@@ -97,7 +98,7 @@ const SingUp = () => {
           </TouchableOpacity>
         </Box>
       </Box>
-    </>
+    </SafeAreaView>
   );
 };
 

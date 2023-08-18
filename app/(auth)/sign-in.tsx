@@ -16,6 +16,7 @@ import { type ValidationSchemaType, validationSchema } from "@src/types/schema";
 import Loading from "@components/loading";
 import { loginMutation } from "@apis/auth";
 import CustomButton from "@components/ui/customButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignIn = () => {
   const router = useRouter();
@@ -37,7 +38,7 @@ const SignIn = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1 }}>
       <Snackbar />
       <Box flex={1} paddingHorizontal="hl" paddingTop="vl">
         <Feather
@@ -91,7 +92,7 @@ const SignIn = () => {
           </TouchableOpacity>
         </Box>
       </Box>
-    </>
+    </SafeAreaView>
   );
 };
 
