@@ -7,7 +7,6 @@ import { StatusBar } from "expo-status-bar";
 import { useStore } from "@zustand/store";
 import { reloadAsync } from "expo-updates";
 import { useFonts } from "expo-font";
-import * as Notifications from "expo-notifications";
 import { FlashList } from "@shopify/flash-list";
 import {
   PaperProvider,
@@ -15,7 +14,7 @@ import {
   TextInput,
   configureFonts,
 } from "react-native-paper";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { MaterialDark, MaterialLight, fontConfig } from "@styles/material";
 import { ThemeProvider } from "@react-navigation/native";
 import {
@@ -23,7 +22,7 @@ import {
   TextInput as PaperTextInput,
 } from "react-native-paper";
 import { ThemeProp } from "react-native-paper/lib/typescript/src/types";
-import theme, { Box, ReText, darkTheme } from "@styles/theme";
+import theme, { ReText, darkTheme } from "@styles/theme";
 import Colors from "@styles/colors";
 import {
   I18nManager,
@@ -38,20 +37,13 @@ import {
   LightNavigationColors,
 } from "@styles/navigation";
 import { getDataFromStorage } from "@utils/helper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 }
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,7 +60,7 @@ const queryClient = new QueryClient({
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`
-  initialRouteName: "(tabs)",
+  initialRouteName: "(home)/index",
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -97,7 +89,6 @@ const getTheme = async () => {
 const getUserFromStorage = async () => {
   const user = await getDataFromStorage("user");
   if (user) useStore.setState({ user });
-  console.log("user is:", user);
 };
 
 export default function RootLayout() {
@@ -129,38 +120,31 @@ export default function RootLayout() {
   const segments = useSegments();
   const router = useRouter();
 
-  const [isFirstTime, setIsFirstTime] = useState(false);
   const { isDark, user } = useStore((state) => state);
 
   useEffect(() => {
     forceRTL();
     getUserFromStorage();
     getTheme();
-    // const firstTime = async () => {
-    //   const firstTime = await getDataFromStorage("firstTime");
-    //   if (firstTime === null) {
-    //     setIsFirstTime(true);
-    //   }
-    // };
-    // firstTime();
   }, []);
 
   useEffect(() => {
-    const inAuthGroup = segments.includes("profile");
+    const inAuthGroup = segments.includes("(home)");
     if (!user && inAuthGroup) {
       router.replace("/sign-in");
-    } else if (user && segments[0] === "(auth)") {
+    } else if (
+      user &&
+      segments[0] === "(auth)" &&
+      segments[1] !== "validation"
+    ) {
       router.replace("/");
     }
-    console.log(user, segments);
+    console.log(segments);
   }, [user, segments]);
 
   const [fontsLoaded] = useFonts({
     CairoReg: require("@assets/fonts/Cairo-Reg.ttf"),
-    CairoMedium: require("@assets/fonts/Cairo-Medium.ttf"),
     CairoBold: require("@assets/fonts/Cairo-Bold.ttf"),
-    CairoSemiBold: require("@assets/fonts/Cairo-SemiBold.ttf"),
-    SahabahLight: require("@assets/fonts/DG-Sahabah-Light.ttf"),
     SahabahBold: require("@assets/fonts/DG-Sahabah-Bold.ttf"),
     SahabahReg: require("@assets/fonts/DG-Sahabah-Reg.ttf"),
   });
@@ -198,20 +182,15 @@ export default function RootLayout() {
           <ThemeProvider
             value={isDark ? DarkNavigationColors : LightNavigationColors}
           >
-            <Box flex={1} onLayout={onLayoutRootView}>
+            <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
               <Stack
                 screenOptions={{
                   headerShown: false,
                 }}
               >
-                <Stack.Screen
-                  name="modal"
-                  options={{
-                    presentation: "modal",
-                  }}
-                />
+                <Stack.Screen name="(home)/index" />
               </Stack>
-            </Box>
+            </SafeAreaView>
           </ThemeProvider>
         </PaperProvider>
       </ReThemeProvider>

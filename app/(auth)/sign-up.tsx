@@ -3,7 +3,7 @@ import Colors from "@styles/colors";
 import { IconSize } from "@styles/size";
 import { Box, ReText, Theme } from "@styles/theme";
 import { useRouter } from "expo-router";
-import { Button, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { vs } from "@utils/platform";
@@ -15,6 +15,7 @@ import { type ValidationSchemaType, validationSchema } from "@src/types/schema";
 import { useState } from "react";
 import { registerMutation } from "@apis/auth";
 import Loading from "@components/loading";
+import CustomButton from "@components/ui/customButton";
 
 const SingUp = () => {
   const router = useRouter();
@@ -26,8 +27,8 @@ const SingUp = () => {
   const { mutate, isLoading } = registerMutation();
 
   const onSubmit = (data: ValidationSchemaType) => {
-    console.log(data);
     mutate(data);
+    router.replace("/validation");
   };
 
   const onEyePress = () => {
@@ -79,16 +80,18 @@ const SingUp = () => {
             style={{ width: "100%", fontFamily: "CairoReg" }}
           />
           <Box height={vs(32)} />
-          <Button
+          <CustomButton
             mode="contained-tonal"
             onPress={handleSubmit(onSubmit)}
-            style={{ width: "100%" }}
-            labelStyle={{ fontFamily: "CairoSemiBold" }}
-          >
-            تسجيل
-          </Button>
+            title="تسجيل"
+          />
           <TouchableOpacity onPress={() => router.push("sign-in")}>
-            <ReText marginTop="hm" marginHorizontal="hs" variant="BodySmall">
+            <ReText
+              marginTop="hm"
+              marginHorizontal="hs"
+              textAlign="left"
+              variant="BodySmall"
+            >
               لديك حساب؟ تسجيل الدخول
             </ReText>
           </TouchableOpacity>
