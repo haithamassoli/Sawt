@@ -1,15 +1,14 @@
 import { Feather } from "@expo/vector-icons";
 import Colors from "@styles/colors";
 import { IconSize } from "@styles/size";
-import { Box, ReText, Theme } from "@styles/theme";
+import { Box, ReText } from "@styles/theme";
 import { useRouter } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { vs } from "@utils/platform";
+import { hs, vs } from "@utils/platform";
 import ControlledInput from "@components/controlledInput";
-import { useTheme } from "@shopify/restyle";
-import { TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import Snackbar from "@components/snackbar";
 import { useRef, useState } from "react";
 import { type ValidationSchemaType, validationSchema } from "@src/types/schema";
@@ -17,22 +16,54 @@ import Loading from "@components/loading";
 import { loginMutation } from "@apis/auth";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { auth, firebaseConfig } from "@src/firebase.config";
+import { useStore } from "@zustand/store";
+import { PhoneAuthProvider } from "firebase/auth";
 
 const SignIn = () => {
   const router = useRouter();
-  const { colors } = useTheme<Theme>();
+  const recaptchaVerifier = useRef(null);
+  const [showValidation, setShowValidation] = useState(false);
+  const [verificationId, setVerificationId] = useState("");
+  const { mutate, isLoading } = loginMutation();
+
   const { control, handleSubmit } = useForm<ValidationSchemaType>({
     resolver: zodResolver(validationSchema),
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const { mutate, isLoading } = loginMutation();
 
-  const onSubmit = (data: ValidationSchemaType) => {
-    mutate(data);
+  const onSubmit = async (data: ValidationSchemaType) => {
+    try {
+      const phoneProvider = new PhoneAuthProvider(auth);
+      await phoneProvider
+        .verifyPhoneNumber(
+          `+962${data.phoneNumber}`,
+          recaptchaVerifier.current!
+        )
+        .then((verificationId) => {
+          setVerificationId(verificationId);
+          setShowValidation(true);
+          useStore.setState({
+            snackbarText: "لقد تم إرسال رسالة تحقق إلى هاتفك",
+          });
+        });
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   };
 
-  const onEyePress = () => {
-    setShowPassword((e) => !e);
+  const onSubmitCode = (data: ValidationSchemaType) => {
+    mutate(
+      { verificationId, code: data.verificationCode! },
+      {
+        onSuccess: () => {
+          useStore.setState({
+            snackbarText: "تم تسجيل الدخول بنجاح",
+          });
+          router.push("/(drawer)");
+        },
+      }
+    );
   };
 
   if (isLoading) return <Loading />;
@@ -40,43 +71,68 @@ const SignIn = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Snackbar />
-      <Box flex={1} paddingHorizontal="hl" paddingTop="vl">
-        <Feather
-          name="x"
-          size={IconSize.l}
-          color={colors.text}
-          onPress={() => router.replace("/")}
-        />
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+      />
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: hs(16),
+          paddingTop: vs(16),
+        }}
+      >
         <Box flex={1}>
           <Box height={"25%"} justifyContent="center" alignItems="center">
             <Feather name="user" color={Colors.primary} size={IconSize.xl} />
             <ReText variant="DisplaySmall">تسجيل الدخول</ReText>
           </Box>
-          <Box height={vs(64)} />
+          <Box height={vs(32)} />
           <ControlledInput
             control={control}
-            name="email"
-            label={"البريد الإلكتروني"}
-            keyboardType="email-address"
-            autoComplete="email"
-            textContentType="emailAddress"
-          />
-          <ControlledInput
-            control={control}
-            name="password"
-            textContentType="password"
-            secureTextEntry={!showPassword}
+            name="phoneNumber"
+            label={"رقم الهاتف"}
+            placeholder="770000000"
+            inputMode="numeric"
+            keyboardType="numeric"
+            contentStyle={{
+              height: vs(52),
+              textAlignVertical: "center",
+            }}
             right={
-              <TextInput.Icon
-                icon={showPassword ? "eye-off" : "eye"}
-                onPress={onEyePress}
+              <TextInput.Affix
+                text="+962"
+                textStyle={{
+                  color: Colors.primary,
+                  height: vs(42),
+                }}
               />
             }
-            label={"كلمة المرور"}
           />
+          {showValidation && (
+            <ControlledInput
+              control={control}
+              name="verificationCode"
+              label={"رمز التحقق"}
+              inputMode="numeric"
+              keyboardType="numeric"
+              contentStyle={{
+                height: vs(52),
+                textAlignVertical: "center",
+              }}
+              right={
+                <TextInput.Icon
+                  icon={"check"}
+                  color={Colors.primary3}
+                  onPress={handleSubmit(onSubmitCode)}
+                />
+              }
+            />
+          )}
           <Box height={vs(32)} />
           <CustomButton
-            mode="contained-tonal"
+            mode="contained"
             onPress={handleSubmit(onSubmit)}
             title="تسجيل الدخول"
           />
@@ -91,7 +147,7 @@ const SignIn = () => {
             </ReText>
           </TouchableOpacity>
         </Box>
-      </Box>
+      </ScrollView>
     </SafeAreaView>
   );
 };

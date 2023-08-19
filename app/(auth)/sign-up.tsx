@@ -1,88 +1,164 @@
 import { Feather } from "@expo/vector-icons";
 import Colors from "@styles/colors";
 import { IconSize } from "@styles/size";
-import { Box, ReText, Theme } from "@styles/theme";
+import { Box, ReText } from "@styles/theme";
 import { useRouter } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { vs } from "@utils/platform";
+import { hs, vs } from "@utils/platform";
 import ControlledInput from "@components/controlledInput";
-import { useTheme } from "@shopify/restyle";
-import { TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import Snackbar from "@components/snackbar";
-import { type ValidationSchemaType, validationSchema } from "@src/types/schema";
-import { useState } from "react";
-import { registerMutation } from "@apis/auth";
+import { SignUpSchemaType, signUpSchema } from "@src/types/schema";
+import { useRef, useState } from "react";
+import { verifyCodeMutation } from "@apis/auth";
 import Loading from "@components/loading";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { isAppInstalled, openApp } from "react-native-send-intent";
+import { useStore } from "@zustand/store";
+import { PhoneAuthProvider } from "firebase/auth";
+import { auth, firebaseConfig } from "@src/firebase.config";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 
 const SingUp = () => {
   const router = useRouter();
-  const { colors } = useTheme<Theme>();
-  const { control, handleSubmit } = useForm<ValidationSchemaType>({
-    resolver: zodResolver(validationSchema),
+  const recaptchaVerifier = useRef(null);
+  const [showValidation, setShowValidation] = useState(false);
+  const [verificationId, setVerificationId] = useState("");
+  const { mutate: verifyCode, isLoading: isLoadingVerifyCode } =
+    verifyCodeMutation();
+
+  const { control, handleSubmit, getValues } = useForm<SignUpSchemaType>({
+    resolver: zodResolver(signUpSchema),
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const { mutate, isLoading } = registerMutation();
 
-  const onSubmit = (data: ValidationSchemaType) => {
-    mutate(data);
-    router.replace("/validation");
+  const onSubmit = (data: SignUpSchemaType) => {
+    try {
+      isAppInstalled("com.modee.sanad").then((isInstalled) => {
+        if (isInstalled) {
+          openApp("com.modee.sanad", {}).then(async (wasOpened) => {
+            if (wasOpened) {
+              const phoneProvider = new PhoneAuthProvider(auth);
+              await phoneProvider
+                .verifyPhoneNumber(
+                  `+962${data.phoneNumber}`,
+                  recaptchaVerifier.current!
+                )
+                .then((verificationId) => {
+                  setVerificationId(verificationId);
+                  setShowValidation(true);
+                  useStore.setState({
+                    snackbarText:
+                      "تم الربط مع سند بنجاح يرجى، لقد تم إرسال رسالة تحقق إلى هاتفك",
+                  });
+                });
+            } else {
+              useStore.setState({
+                snackbarText: "يرجى تثبيت تطبيق سند لإكمال عملية التسجيل",
+              });
+            }
+          });
+        } else {
+          useStore.setState({
+            snackbarText: "يرجى تثبيت تطبيق سند لإكمال عملية التسجيل",
+          });
+        }
+      });
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   };
 
-  const onEyePress = () => {
-    setShowPassword((e) => !e);
+  const onSubmitCode = (data: SignUpSchemaType) => {
+    verifyCode(
+      { verificationId, code: data.verificationCode!, name: getValues("name") },
+      {
+        onSuccess: () => {
+          useStore.setState({
+            snackbarText: "تم تسجيل الدخول بنجاح",
+          });
+          router.push("/(drawer)");
+        },
+      }
+    );
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoadingVerifyCode) return <Loading />;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Snackbar />
-      <Box flex={1} paddingHorizontal="hl" paddingTop="vl">
-        <Feather
-          name="x"
-          size={IconSize.l}
-          color={colors.text}
-          onPress={() => router.replace("/")}
-        />
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+      />
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: hs(16),
+          paddingTop: vs(16),
+        }}
+      >
         <Box flex={1}>
           <Box height={"25%"} justifyContent="center" alignItems="center">
             <Feather name="user" color={Colors.primary} size={IconSize.xl} />
             <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
           </Box>
-          <Box height={vs(64)} />
+          <Box height={vs(32)} />
           <ControlledInput
             control={control}
-            name="email"
-            label={"البريد الإلكتروني"}
-            keyboardType="email-address"
-            autoComplete="email"
-            textContentType="emailAddress"
-            style={{
-              width: "100%",
-              fontFamily: "CairoReg",
-            }}
+            name="name"
+            label={"الاسم"}
+            autoComplete="name"
+            textContentType="name"
           />
           <ControlledInput
             control={control}
-            name="password"
-            textContentType="password"
-            secureTextEntry={!showPassword}
+            name="phoneNumber"
+            label={"رقم الهاتف"}
+            placeholder="770000000"
+            inputMode="numeric"
+            keyboardType="numeric"
+            contentStyle={{
+              height: vs(52),
+              textAlignVertical: "center",
+            }}
             right={
-              <TextInput.Icon
-                icon={showPassword ? "eye-off" : "eye"}
-                onPress={onEyePress}
+              <TextInput.Affix
+                text="+962"
+                textStyle={{
+                  color: Colors.primary,
+                  height: vs(42),
+                }}
               />
             }
-            label={"كلمة المرور"}
-            style={{ width: "100%", fontFamily: "CairoReg" }}
           />
+          {showValidation && (
+            <ControlledInput
+              control={control}
+              name="verificationCode"
+              label={"رمز التحقق"}
+              inputMode="numeric"
+              keyboardType="numeric"
+              contentStyle={{
+                height: vs(52),
+                textAlignVertical: "center",
+              }}
+              right={
+                <TextInput.Icon
+                  icon={"check"}
+                  color={Colors.primary3}
+                  onPress={handleSubmit(onSubmitCode)}
+                />
+              }
+            />
+          )}
           <Box height={vs(32)} />
           <CustomButton
-            mode="contained-tonal"
+            mode="contained"
             onPress={handleSubmit(onSubmit)}
             title="تسجيل"
           />
@@ -97,7 +173,7 @@ const SingUp = () => {
             </ReText>
           </TouchableOpacity>
         </Box>
-      </Box>
+      </ScrollView>
     </SafeAreaView>
   );
 };

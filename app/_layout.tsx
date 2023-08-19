@@ -36,7 +36,12 @@ import {
   DarkNavigationColors,
   LightNavigationColors,
 } from "@styles/navigation";
-import { getDataFromStorage } from "@utils/helper";
+import { deleteAllStorage, getDataFromStorage } from "@utils/helper";
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from "expo-router";
 
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -125,16 +130,16 @@ export default function RootLayout() {
     forceRTL();
     getUserFromStorage();
     getTheme();
+    // deleteAllStorage();
   }, []);
 
   useEffect(() => {
-    const inAuthGroup = segments.includes("(home)");
+    const inAuthGroup = segments.includes("(drawer)");
     if (!user && inAuthGroup) {
-      router.replace("/sign-in");
+      router.replace("/on-boarding");
     } else if (
       user &&
-      segments[0] === "(auth)" &&
-      segments[1] !== "validation"
+      (segments[0] === "(auth)" || segments[0] === "on-boarding")
     ) {
       router.replace("/");
     }

@@ -41,7 +41,7 @@ const CustomDrawer = (props: any) => {
                 الملف الشخصي
               </ReText>
               <ReText variant="TitleSmall" color="primary" textAlign="center">
-                {!!user ? user.email.split("@")[0] : "تسجيل الدخول"}
+                {!!user ? user.name : "تسجيل الدخول"}
               </ReText>
             </Box>
           </Box>
