@@ -13,7 +13,7 @@ const {
   appId,
 } = Constants?.expoConfig?.extra?.firebase;
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: apiKey,
   authDomain: authDomain,
   projectId: projectId,

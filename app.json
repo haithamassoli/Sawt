@@ -16,7 +16,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "buildNumber": "0.1.0",
       "supportsTablet": true,
@@ -42,6 +44,9 @@
         "storageBucket": "sawt-jo.appspot.com",
         "messagingSenderId": "538339777554",
         "appId": "1:538339777554:web:ef5efccf3ef1b36dcd0ccb"
+      },
+      "eas": {
+        "projectId": "a6128180-4a53-4099-a116-2e827f1f9c9c"
       }
     }
   }
