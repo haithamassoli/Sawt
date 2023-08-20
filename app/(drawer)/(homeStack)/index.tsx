@@ -1,13 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-  blurhash,
-  getDataFromStorage,
-  storeDataToStorage,
-  width,
-} from "@utils/helper";
-import OnBoarding from "@components/onBoarding";
+import { blurhash, storeDataToStorage, width } from "@utils/helper";
 import { Box, ReText, Theme } from "@styles/theme";
-import { router, useNavigation, useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { logoutMutation } from "@apis/auth";
 import ImagesCarousel from "@components/imagesCarousel";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,49 +12,29 @@ import { homeIcons } from "@src/data/homeIcons";
 import { TouchableOpacity } from "react-native";
 
 const HomeScreen = () => {
-  const [isFirstTime, setIsFirstTime] = useState(false);
   const { colors } = useTheme<Theme>();
   const navigation: any = useNavigation();
-  const route = useRouter();
+  const router = useRouter();
 
   const { mutate } = logoutMutation();
 
-  useEffect(() => {
-    const firstTime = async () => {
-      const firstTime = await getDataFromStorage("firstTime");
-      if (firstTime === null) {
-        setIsFirstTime(true);
-      }
-    };
-    firstTime();
-  }, []);
+  const onPress = async () => {
+    mutate();
+    await storeDataToStorage("firstTime", null);
+    router.replace("/");
+  };
 
-  // const onPress = async () => {
-  //   mutate();
-  //   await storeDataToStorage("firstTime", null);
-  //   router.replace("/sign-in");
-  // };
-
-  const onFinished = useCallback(async () => {
-    setIsFirstTime(false);
-    await storeDataToStorage("firstTime", true);
-    router.replace("/sign-in");
-  }, []);
-
-  if (isFirstTime) {
-    return <OnBoarding onFinished={onFinished} />;
-  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Box
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
-        marginEnd="hm"
+        marginHorizontal="hm"
         height={vs(60)}
       >
         <Image
-          source={require("@assets/icon.png")}
+          source={require("@assets/images/icons/icon.png")}
           style={{ width: ms(72), height: ms(72) }}
           contentFit="contain"
           placeholder={blurhash}
@@ -92,7 +65,16 @@ const HomeScreen = () => {
         gap="vl"
       >
         {homeIcons.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => route.push(item.route)}>
+          <TouchableOpacity
+            key={index}
+            onPress={() =>
+              router.push(`/electoralValidation?from=${item.route}`)
+            }
+            // onPress={onPress}
+            style={{
+              marginBottom: vs(32),
+            }}
+          >
             <Image
               source={item.icon}
               style={{ width: width / 3, height: vs(100) }}
@@ -105,6 +87,7 @@ const HomeScreen = () => {
               variant="TitleMedium"
               textAlign="center"
               fontFamily="CairoBold"
+              color="primary"
             >
               {item.title}
             </ReText>
