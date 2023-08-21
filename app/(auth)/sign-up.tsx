@@ -16,7 +16,7 @@ import { verifyCodeMutation } from "@apis/auth";
 import Loading from "@components/loading";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { isAppInstalled, openApp } from "react-native-send-intent";
+import { isAppInstalled } from "react-native-send-intent";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 import { auth, firebaseConfig } from "@src/firebase.config";
@@ -36,30 +36,22 @@ const SingUp = () => {
 
   const onSubmit = (data: SignUpSchemaType) => {
     try {
-      isAppInstalled("com.modee.sanad").then((isInstalled) => {
+      isAppInstalled("com.modee.sanad").then(async (isInstalled) => {
         if (isInstalled) {
-          openApp("com.modee.sanad", {}).then(async (wasOpened) => {
-            if (wasOpened) {
-              const phoneProvider = new PhoneAuthProvider(auth);
-              await phoneProvider
-                .verifyPhoneNumber(
-                  `+962${data.phoneNumber}`,
-                  recaptchaVerifier.current!
-                )
-                .then((verificationId) => {
-                  setVerificationId(verificationId);
-                  setShowValidation(true);
-                  useStore.setState({
-                    snackbarText:
-                      "تم الربط مع سند بنجاح يرجى، لقد تم إرسال رسالة تحقق إلى هاتفك",
-                  });
-                });
-            } else {
+          const phoneProvider = new PhoneAuthProvider(auth);
+          await phoneProvider
+            .verifyPhoneNumber(
+              `+962${data.phoneNumber}`,
+              recaptchaVerifier.current!
+            )
+            .then((verificationId) => {
+              setVerificationId(verificationId);
+              setShowValidation(true);
               useStore.setState({
-                snackbarText: "يرجى تثبيت تطبيق سند لإكمال عملية التسجيل",
+                snackbarText:
+                  "تم الربط مع سند بنجاح يرجى، لقد تم إرسال رسالة تحقق إلى هاتفك",
               });
-            }
-          });
+            });
         } else {
           useStore.setState({
             snackbarText: "يرجى تثبيت تطبيق سند لإكمال عملية التسجيل",
