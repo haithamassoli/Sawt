@@ -3,7 +3,7 @@
     "name": "صوت",
     "slug": "sawt",
     "scheme": "sawt",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,13 +14,12 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "NEVER"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "0.1.0",
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "bundleIdentifier": "com.haithamassoli.sawt"
     },
@@ -45,9 +44,13 @@
         "messagingSenderId": "538339777554",
         "appId": "1:538339777554:web:ef5efccf3ef1b36dcd0ccb"
       },
+      "router": {
+        "origin": false
+      },
       "eas": {
         "projectId": "a6128180-4a53-4099-a116-2e827f1f9c9c"
       }
-    }
+    },
+    "plugins": ["expo-router"]
   }
 }
