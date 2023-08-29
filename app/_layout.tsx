@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as ReThemeProvider } from "@shopify/restyle";
 import { StatusBar } from "expo-status-bar";
 import { useStore } from "@zustand/store";
-import { reloadAsync } from "expo-updates";
+import RNRestart from "react-native-restart";
 import { useFonts } from "expo-font";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -93,12 +93,12 @@ export default function RootLayout() {
 
   const { isDark, user } = useStore();
 
-  const forceRTL = async () => {
+  const forceRTL = () => {
     if (!I18nManager.isRTL) {
       try {
         I18nManager.allowRTL(true);
         I18nManager.forceRTL(true);
-        await reloadAsync();
+        RNRestart.restart();
       } catch (error) {
         console.log(error);
       }

@@ -15,7 +15,8 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "NEVER"
+      "checkAutomatically": "NEVER",
+      "enabled": false
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
