@@ -1,11 +1,5 @@
 export const homeIcons = [
   {
-    id: 1,
-    title: "استفتاءات",
-    icon: require("@assets/images/icons/1.png"),
-    route: "/",
-  },
-  {
     id: 2,
     title: "الانتخابات النيابية",
     icon: require("@assets/images/icons/2.png"),
@@ -15,6 +9,12 @@ export const homeIcons = [
     id: 3,
     title: "الانتخابات البلدية",
     icon: require("@assets/images/icons/3.png"),
+    route: "/",
+  },
+  {
+    id: 1,
+    title: "استفتاءات",
+    icon: require("@assets/images/icons/1.png"),
     route: "/",
   },
   {
