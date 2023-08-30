@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import Colors from "@styles/colors";
 import { IconSize } from "@styles/size";
 import { Box, ReText } from "@styles/theme";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,6 @@ import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 
 const SignIn = () => {
-  const router = useRouter();
   const recaptchaVerifier = useRef(null);
   const [showValidation, setShowValidation] = useState(false);
   const [verificationId, setVerificationId] = useState("");

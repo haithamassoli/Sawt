@@ -19,7 +19,7 @@ import { ThemeProvider } from "@react-navigation/native";
 import theme, { Box, ReText, darkTheme } from "@styles/theme";
 import Colors from "@styles/colors";
 import { I18nManager, Platform, ScrollView, UIManager } from "react-native";
-import { Stack, SplashScreen, useSegments, useRouter } from "expo-router";
+import { Stack, SplashScreen, useSegments, router } from "expo-router";
 import {
   DarkNavigationColors,
   LightNavigationColors,
@@ -40,7 +40,7 @@ if (Platform.OS === "android") {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
+      retry: 2,
       staleTime: Infinity,
       refetchInterval: false,
       refetchOnMount: false,
@@ -89,7 +89,6 @@ export default function RootLayout() {
   FlashList.defaultProps.showsHorizontalScrollIndicator = false;
 
   const segments = useSegments();
-  const router = useRouter();
 
   const { isDark, user } = useStore();
 

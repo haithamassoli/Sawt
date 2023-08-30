@@ -1,6 +1,6 @@
 import { blurhash, storeDataToStorage, width } from "@utils/helper";
 import { Box, ReText, Theme } from "@styles/theme";
-import { useNavigation, useRouter } from "expo-router";
+import { useNavigation, router } from "expo-router";
 import { logoutMutation } from "@apis/auth";
 import ImagesCarousel from "@components/imagesCarousel";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +14,6 @@ import { TouchableOpacity } from "react-native";
 const HomeScreen = () => {
   const { colors } = useTheme<Theme>();
   const navigation: any = useNavigation();
-  const router = useRouter();
 
   const { mutate } = logoutMutation();
 

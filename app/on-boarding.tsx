@@ -5,11 +5,10 @@ import { StatusBar } from "expo-status-bar";
 import { width } from "@utils/helper";
 import { Box, ReText } from "@styles/theme";
 import CustomButton from "@components/ui/customButton";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 
 const OnBoarding = () => {
   const scrollRef = useRef<ScrollView>(null);
-  const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(isIOS ? 0 : 1);
 
   const onNext = () => {
