@@ -52,6 +52,14 @@
         "projectId": "a6128180-4a53-4099-a116-2e827f1f9c9c"
       }
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app needs access to your photos to upload the photos with the complaint"
+        }
+      ],
+      "expo-router"
+    ]
   }
 }
