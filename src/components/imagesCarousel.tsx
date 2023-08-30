@@ -6,7 +6,7 @@ import Colors from "@styles/colors";
 import { hs, ms, vs } from "@utils/platform";
 import { Box, Theme } from "@styles/theme";
 import { useStore } from "@zustand/store";
-import { blurhash, height, width } from "@utils/helper";
+import { blurhash, width } from "@utils/helper";
 import { Image } from "expo-image";
 
 type Props = {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   dot: {
-    marginTop: vs(-24),
+    marginTop: vs(12),
     height: ms(8),
     borderRadius: ms(6),
     borderWidth: ms(4),

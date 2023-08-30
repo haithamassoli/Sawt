@@ -10,6 +10,8 @@ import { useTheme } from "@shopify/restyle";
 import { Image } from "expo-image";
 import { homeIcons } from "@src/data/homeIcons";
 import { TouchableOpacity } from "react-native";
+import { useStore } from "@zustand/store";
+import Snackbar from "@components/snackbar";
 
 const HomeScreen = () => {
   const { colors } = useTheme<Theme>();
@@ -25,6 +27,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Snackbar />
       <Box
         flexDirection="row"
         justifyContent="space-between"
@@ -66,17 +69,22 @@ const HomeScreen = () => {
         {homeIcons.map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() =>
-              router.push(`/electoralValidation?from=${item.route}`)
-            }
-            // onPress={onPress}
+            onPress={() => {
+              if (item.id === 3)
+                return useStore.setState({ snackbarText: "قريباً" });
+              // @ts-ignore
+              router.push(item.route);
+            }}
             style={{
               marginBottom: vs(32),
             }}
           >
             <Image
               source={item.icon}
-              style={{ width: width / 3, height: vs(100) }}
+              style={{
+                width: width / 3,
+                height: vs(100),
+              }}
               contentFit="contain"
               placeholder={blurhash}
               transition={400}
@@ -86,7 +94,9 @@ const HomeScreen = () => {
               variant="TitleMedium"
               textAlign="center"
               fontFamily="CairoBold"
-              color="primary"
+              style={{
+                color: item.id === 3 ? colors.black6 : colors.primary,
+              }}
             >
               {item.title}
             </ReText>
