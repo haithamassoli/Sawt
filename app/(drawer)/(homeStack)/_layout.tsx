@@ -26,7 +26,7 @@ const HomeStack = () => {
         }}
       />
       <Stack.Screen
-        name="(elections)/index"
+        name="(elections)/user-info"
         options={{
           title: "",
         }}

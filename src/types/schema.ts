@@ -78,6 +78,18 @@ export type ValidationElectoralSchemaType = z.infer<
   typeof validationElectoralSchema
 >;
 
+export const validationComplaintsSchema = z.object({
+  complaints: z
+    .string({
+      required_error: "حقل الشكوى أو الإقتراح يجب أن لا يكون فارغ",
+    })
+    .min(10, "حقل الشكوى أو الإقتراح يجب أن يكون على الأقل 10 أحرف"),
+});
+
+export type validationComplaintsSchemaType = z.infer<
+  typeof validationComplaintsSchema
+>;
+
 export interface IUser {
   apiKey: string;
   appName: string;

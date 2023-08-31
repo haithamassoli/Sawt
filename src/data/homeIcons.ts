@@ -3,7 +3,7 @@ export const homeIcons = [
     id: 2,
     title: "الانتخابات النيابية",
     icon: require("@assets/images/icons/2.png"),
-    route: "/(elections)/info",
+    route: "/(elections)/user-info",
   },
   {
     id: 3,
