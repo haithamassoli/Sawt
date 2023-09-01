@@ -19,7 +19,13 @@ import { ThemeProvider } from "@react-navigation/native";
 import theme, { Box, ReText, darkTheme } from "@styles/theme";
 import Colors from "@styles/colors";
 import { I18nManager, Platform, ScrollView, UIManager } from "react-native";
-import { Stack, SplashScreen, useSegments, router } from "expo-router";
+import {
+  Stack,
+  SplashScreen,
+  useSegments,
+  router,
+  useRootNavigationState,
+} from "expo-router";
 import {
   DarkNavigationColors,
   LightNavigationColors,
@@ -89,6 +95,7 @@ export default function RootLayout() {
   FlashList.defaultProps.showsHorizontalScrollIndicator = false;
 
   const segments = useSegments();
+  const rootNavigationState = useRootNavigationState();
 
   const { isDark, user } = useStore();
 
@@ -112,7 +119,9 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
+    if (!rootNavigationState?.key) return;
     const inAuthGroup = segments.includes("(drawer)");
+    // const inAuthGroup = segments.includes("(as)");
     if (!user && inAuthGroup) {
       router.replace("/on-boarding");
     } else if (
@@ -122,7 +131,7 @@ export default function RootLayout() {
       router.replace("/");
     }
     console.log(segments);
-  }, [user, segments]);
+  }, [user, segments, rootNavigationState]);
 
   const [fontsLoaded] = useFonts({
     CairoReg: require("@assets/fonts/Cairo-Reg.ttf"),
@@ -167,7 +176,11 @@ export default function RootLayout() {
                 screenOptions={{
                   headerShown: false,
                 }}
-              />
+              >
+                <Stack.Screen name="on-boarding" />
+                <Stack.Screen name="(auth)/sign-in" />
+                <Stack.Screen name="(auth)/sign-up" />
+              </Stack>
             </Box>
           </ThemeProvider>
         </PaperProvider>

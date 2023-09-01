@@ -7,6 +7,10 @@ const HomeStack = () => {
       screenOptions={{
         headerTitleAlign: "center",
         headerBackTitle: "رجوع",
+        headerBackTitleStyle: {
+          fontFamily: "CairoBold",
+          fontSize: ms(16),
+        },
         headerTitleStyle: {
           fontFamily: "CairoBold",
           fontSize: ms(16),
@@ -22,31 +26,31 @@ const HomeStack = () => {
       <Stack.Screen
         name="(elections)/validation"
         options={{
-          title: "",
+          title: "الرقم الانتخابي",
         }}
       />
       <Stack.Screen
         name="(elections)/user-info"
         options={{
-          title: "",
+          title: "البيانات الشخصية",
         }}
       />
       <Stack.Screen
         name="(elections)/candidates"
         options={{
-          title: "",
+          title: "المرشحين",
         }}
       />
       <Stack.Screen
         name="(elections)/results"
         options={{
-          title: "",
+          title: "نتائج الانتخابات",
         }}
       />
       <Stack.Screen
         name="(elections)/vice-info"
         options={{
-          title: "",
+          title: "السيرة الذاتية",
         }}
       />
     </Stack>
