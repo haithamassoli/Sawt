@@ -117,4 +117,5 @@ export interface IUser {
   phoneNumber: string;
   idNumber: string;
   name: string;
+  electoralNumber?: string;
 }
