@@ -16,11 +16,10 @@ import { verifyCodeMutation } from "@apis/auth";
 import Loading from "@components/loading";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { isAppInstalled } from "react-native-send-intent";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 import { auth, firebaseConfig } from "@src/firebase.config";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
 
 const SingUp = () => {
   const recaptchaVerifier = useRef(null);
@@ -33,30 +32,22 @@ const SingUp = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = (data: SignUpSchemaType) => {
+  const onSubmit = async (data: SignUpSchemaType) => {
     try {
-      isAppInstalled("com.modee.sanad").then(async (isInstalled) => {
-        if (isInstalled) {
-          const phoneProvider = new PhoneAuthProvider(auth);
-          await phoneProvider
-            .verifyPhoneNumber(
-              `+962${data.phoneNumber}`,
-              recaptchaVerifier.current!
-            )
-            .then((verificationId) => {
-              setVerificationId(verificationId);
-              setShowValidation(true);
-              useStore.setState({
-                snackbarText:
-                  "تم الربط مع سند بنجاح يرجى، لقد تم إرسال رسالة تحقق إلى هاتفك",
-              });
-            });
-        } else {
+      const phoneProvider = new PhoneAuthProvider(auth);
+      await phoneProvider
+        .verifyPhoneNumber(
+          `+962${data.phoneNumber}`,
+          recaptchaVerifier.current!
+        )
+        .then((verificationId) => {
+          setVerificationId(verificationId);
+          setShowValidation(true);
           useStore.setState({
-            snackbarText: "يرجى تثبيت تطبيق سند لإكمال عملية التسجيل",
+            snackbarText:
+              "تم الربط مع سند بنجاح يرجى، لقد تم إرسال رسالة تحقق إلى هاتفك",
           });
-        }
-      });
+        });
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -70,7 +61,7 @@ const SingUp = () => {
           useStore.setState({
             snackbarText: "تم تسجيل الدخول بنجاح",
           });
-          router.push("/(drawer)");
+          router.push("/(drawer)/(homeStack)");
         },
       }
     );
@@ -153,7 +144,7 @@ const SingUp = () => {
             onPress={handleSubmit(onSubmit)}
             title="تسجيل"
           />
-          <TouchableOpacity onPress={() => router.push("sign-in")}>
+          <TouchableOpacity onPress={() => router.push("/sign-in")}>
             <ReText
               marginTop="hm"
               marginHorizontal="hs"

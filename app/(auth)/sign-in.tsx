@@ -16,7 +16,7 @@ import Loading from "@components/loading";
 import { loginMutation } from "@apis/auth";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
 import { auth, firebaseConfig } from "@src/firebase.config";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
@@ -59,7 +59,7 @@ const SignIn = () => {
           useStore.setState({
             snackbarText: "تم تسجيل الدخول بنجاح",
           });
-          router.push("/(drawer)");
+          router.push("/(drawer)/(homeStack)");
         },
       }
     );
@@ -135,7 +135,7 @@ const SignIn = () => {
             onPress={handleSubmit(onSubmit)}
             title="تسجيل الدخول"
           />
-          <TouchableOpacity onPress={() => router.push("sign-up")}>
+          <TouchableOpacity onPress={() => router.push("/sign-up")}>
             <ReText
               marginTop="hm"
               marginHorizontal="hs"
