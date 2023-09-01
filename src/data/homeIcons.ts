@@ -8,7 +8,7 @@ export const homeIcons = [
   {
     id: 3,
     title: "الانتخابات البلدية",
-    icon: require("@assets/images/icons/5.png"),
+    icon: require("@assets/images/icons/2.png"),
     route: "/",
   },
   {

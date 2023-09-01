@@ -12,10 +12,12 @@ import { homeIcons } from "@src/data/homeIcons";
 import { TouchableOpacity } from "react-native";
 import { useStore } from "@zustand/store";
 import Snackbar from "@components/snackbar";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const HomeScreen = () => {
   const { colors } = useTheme<Theme>();
   const navigation: any = useNavigation();
+  const { user } = useStore();
 
   const { mutate } = logoutMutation();
 
@@ -35,72 +37,93 @@ const HomeScreen = () => {
         marginHorizontal="hm"
         height={vs(60)}
       >
-        <Image
+        <ReText variant="TitleMedium" fontFamily="CairoBold" color="primary">
+          {user?.name} أهلا وسهلاً
+        </ReText>
+        {/* <Image
           source={require("@assets/images/icons/icon.png")}
           style={{ width: ms(72), height: ms(72) }}
           contentFit="contain"
-          placeholder={blurhash}
           transition={400}
-          placeholderContentFit="contain"
-        />
-        <Feather
-          name="menu"
-          size={ms(24)}
-          color={colors.text}
-          onPress={() => navigation.openDrawer()}
-        />
+        /> */}
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Feather name="menu" size={ms(24)} color={colors.text} />
+        </TouchableOpacity>
       </Box>
       <Box marginTop="vxs">
-        <ImagesCarousel
-          images={[
-            require("@assets/images/carousel/2.png"),
-            require("@assets/images/carousel/2.png"),
-            require("@assets/images/carousel/2.png"),
-          ]}
-        />
+        <Animated.View
+          entering={FadeInUp.withInitialValues({
+            transform: [{ translateY: vs(-25) }],
+          }).duration(600)}
+        >
+          <ImagesCarousel
+            images={[
+              require("@assets/images/carousel/2.png"),
+              require("@assets/images/carousel/2.png"),
+              require("@assets/images/carousel/2.png"),
+            ]}
+          />
+        </Animated.View>
       </Box>
       <Box
         flexDirection="row"
         marginTop="v4xl"
         justifyContent="space-evenly"
         flexWrap="wrap"
-        gap="vl"
+        gap="vs"
       >
         {homeIcons.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => {
-              if (item.id === 3)
-                return useStore.setState({ snackbarText: "قريباً" });
-              // @ts-ignore
-              router.push(item.route);
-            }}
-            style={{
-              marginBottom: vs(32),
-            }}
+          <Animated.View
+            key={index.toString()}
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(index * 200 + 200)}
           >
-            <Image
-              source={item.icon}
-              style={{
-                width: width / 3,
-                height: vs(100),
+            <TouchableOpacity
+              onPress={() => {
+                if (item.id === 3)
+                  return useStore.setState({ snackbarText: "قريباً" });
+                // @ts-ignore
+                router.push(item.route);
               }}
-              contentFit="contain"
-              placeholder={blurhash}
-              transition={400}
-              placeholderContentFit="contain"
-            />
-            <ReText
-              variant="TitleMedium"
-              textAlign="center"
-              fontFamily="CairoBold"
               style={{
-                color: item.id === 3 ? colors.black6 : colors.primary,
+                marginBottom: vs(32),
               }}
             >
-              {item.title}
-            </ReText>
-          </TouchableOpacity>
+              <Box
+                width={width / 3}
+                height={width / 3}
+                backgroundColor="black8"
+                style={{
+                  borderRadius: width / 3 / 2,
+                }}
+              >
+                <Image
+                  source={item.icon}
+                  style={{
+                    width: ms(112),
+                    height: ms(112),
+                    alignSelf: "center",
+                  }}
+                  contentFit="contain"
+                  tintColor={item.id === 3 ? colors.black5 : null}
+                  transition={400}
+                />
+              </Box>
+              <ReText
+                variant="TitleMedium"
+                textAlign="center"
+                fontFamily="CairoBold"
+                style={{
+                  color: item.id === 3 ? colors.black6 : colors.primary,
+                }}
+              >
+                {item.title}
+              </ReText>
+            </TouchableOpacity>
+          </Animated.View>
         ))}
       </Box>
     </SafeAreaView>

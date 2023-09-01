@@ -132,13 +132,11 @@ const ComplaintsScreen = () => {
             />
           ))}
         </Box>
-        <Animated.View entering={FadeInUp.duration(600).delay(600)}>
-          <CustomButton
-            title="إرسال"
-            mode="contained-tonal"
-            onPress={handleSubmit(onSubmit)}
-          />
-        </Animated.View>
+        <CustomButton
+          title="إرسال"
+          mode="contained-tonal"
+          onPress={handleSubmit(onSubmit)}
+        />
       </Box>
     </ScrollView>
   );

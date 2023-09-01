@@ -1,11 +1,13 @@
-import { Image, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { useRef, useState, memo, useCallback } from "react";
-import { isIOS } from "@utils/platform";
+import { isIOS, vs } from "@utils/platform";
 import { StatusBar } from "expo-status-bar";
 import { width } from "@utils/helper";
 import { Box, ReText } from "@styles/theme";
 import CustomButton from "@components/ui/customButton";
 import { router } from "expo-router";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import { Image } from "expo-image";
 
 const OnBoarding = () => {
   const scrollRef = useRef<ScrollView>(null);
@@ -21,6 +23,7 @@ const OnBoarding = () => {
       return isIOS ? prev + 1 : prev - 1;
     });
   };
+
   const onFinished = useCallback(async () => {
     router.replace("/sign-in");
   }, []);
@@ -48,13 +51,32 @@ const OnBoarding = () => {
           justifyContent="space-evenly"
         >
           <Box marginBottom="h4xl">
-            <Image source={require("@assets/images/sawt.png")} />
-            <ReText variant="TitleLarge" textAlign="center" color="lightText">
-              يتيح تطبيق صوت للمواطن الأردني ممارسة حقه الدستوري بالانتخاب أينما
-              كان .. وقتما شاء
-            </ReText>
+            <Animated.View entering={FadeInUp.duration(600)}>
+              <Image
+                source={require("@assets/images/sawt.png")}
+                transition={400}
+                style={{
+                  height: vs(280),
+                }}
+              />
+            </Animated.View>
+            <Animated.View entering={FadeInUp.duration(600).delay(200)}>
+              <ReText variant="TitleLarge" textAlign="center" color="lightText">
+                يتيح تطبيق صوت للمواطن الأردني ممارسة حقه الدستوري بالانتخاب
+                أينما كان .. وقتما شاء
+              </ReText>
+            </Animated.View>
           </Box>
-          <CustomButton mode="elevated" title="التالي" onPress={onNext} />
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: 420 }],
+              opacity: isIOS ? 0 : 1,
+            })
+              .duration(600)
+              .delay(400)}
+          >
+            <CustomButton mode="elevated" title="التالي" onPress={onNext} />
+          </Animated.View>
         </Box>
         <Box
           flex={1}
@@ -62,28 +84,59 @@ const OnBoarding = () => {
           backgroundColor="primary"
           justifyContent="space-between"
         >
-          <Box
-            marginBottom="h4xl"
-            gap="hl"
-            paddingHorizontal="hl"
-            justifyContent="center"
-            height={"46%"}
-          >
-            <ReText variant="TitleLarge" textAlign="center" color="lightText">
-              كما يقدم خدمة المشاركة بالاستفتاءات التي قد تجريها الحكومات
-              لاستطلاع الرأي العام
-            </ReText>
-            <CustomButton mode="elevated" title="التالي" onPress={onFinished} />
-          </Box>
-          <Image
-            source={require("@assets/images/hands.png")}
-            style={{
-              width: "100%",
-              height: "46%",
-              alignSelf: "flex-start",
-              resizeMode: "cover",
-            }}
-          />
+          {((selectedIndex === 1 && isIOS) ||
+            (selectedIndex === 0 && !isIOS)) && (
+            <Box
+              marginBottom="h4xl"
+              gap="hl"
+              paddingHorizontal="hl"
+              justifyContent="center"
+              height={"46%"}
+            >
+              <Animated.View entering={FadeInUp.duration(600)}>
+                <ReText
+                  variant="TitleLarge"
+                  textAlign="center"
+                  color="lightText"
+                >
+                  كما يقدم خدمة المشاركة بالاستفتاءات التي قد تجريها الحكومات
+                  لاستطلاع الرأي العام
+                </ReText>
+              </Animated.View>
+              <Animated.View
+                entering={FadeInUp.withInitialValues({
+                  transform: [{ translateY: vs(420) }],
+                  opacity: isIOS ? 0 : 1,
+                })
+                  .duration(600)
+                  .delay(200)}
+              >
+                <CustomButton
+                  mode="elevated"
+                  title="التالي"
+                  onPress={onFinished}
+                />
+              </Animated.View>
+            </Box>
+          )}
+          {((selectedIndex === 1 && isIOS) ||
+            (selectedIndex === 0 && !isIOS)) && (
+            <Animated.View
+              entering={FadeInDown.duration(600).delay(400)}
+              style={{
+                height: "46%",
+              }}
+            >
+              <Image
+                source={require("@assets/images/hands.png")}
+                contentFit="cover"
+                transition={400}
+                style={{
+                  height: "100%",
+                }}
+              />
+            </Animated.View>
+          )}
         </Box>
       </ScrollView>
     </Box>
