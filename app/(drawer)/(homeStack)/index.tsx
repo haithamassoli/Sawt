@@ -21,12 +21,6 @@ const HomeScreen = () => {
 
   const { mutate } = logoutMutation();
 
-  const onPress = async () => {
-    mutate();
-    await storeDataToStorage("firstTime", null);
-    router.replace("/");
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Snackbar />
@@ -38,14 +32,8 @@ const HomeScreen = () => {
         height={vs(60)}
       >
         <ReText variant="TitleMedium" fontFamily="CairoBold" color="primary">
-          {user?.name} أهلا وسهلاً
+          أهلا وسهلاً {user?.name}
         </ReText>
-        {/* <Image
-          source={require("@assets/images/icons/icon.png")}
-          style={{ width: ms(72), height: ms(72) }}
-          contentFit="contain"
-          transition={400}
-        /> */}
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Feather name="menu" size={ms(24)} color={colors.text} />
         </TouchableOpacity>

@@ -175,11 +175,13 @@ export default function RootLayout() {
               <Stack
                 screenOptions={{
                   headerShown: false,
+                  animation: "slide_from_left",
                 }}
               >
                 <Stack.Screen name="on-boarding" />
                 <Stack.Screen name="(auth)/sign-in" />
                 <Stack.Screen name="(auth)/sign-up" />
+                <Stack.Screen name="(auth)/verification" />
               </Stack>
             </Box>
           </ThemeProvider>

@@ -10,22 +10,18 @@ import { hs, vs } from "@utils/platform";
 import ControlledInput from "@components/controlledInput";
 import { ScrollView, TouchableOpacity } from "react-native";
 import Snackbar from "@components/snackbar";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { type ValidationSchemaType, validationSchema } from "@src/types/schema";
-import Loading from "@components/loading";
-import { loginMutation } from "@apis/auth";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
 import { auth, firebaseConfig } from "@src/firebase.config";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const SignIn = () => {
   const recaptchaVerifier = useRef(null);
-  const [showValidation, setShowValidation] = useState(false);
-  const [verificationId, setVerificationId] = useState("");
-  const { mutate, isLoading } = loginMutation();
 
   const { control, handleSubmit } = useForm<ValidationSchemaType>({
     resolver: zodResolver(validationSchema),
@@ -40,32 +36,18 @@ const SignIn = () => {
           recaptchaVerifier.current!
         )
         .then((verificationId) => {
-          setVerificationId(verificationId);
-          setShowValidation(true);
           useStore.setState({
             snackbarText: "لقد تم إرسال رسالة تحقق إلى هاتفك",
           });
+          router.push(
+            // @ts-ignore
+            `/verification?verificationId=${verificationId}&phone=+962${data.phoneNumber}`
+          );
         });
     } catch (error: any) {
       throw new Error(error.message);
     }
   };
-
-  const onSubmitCode = (data: ValidationSchemaType) => {
-    mutate(
-      { verificationId, code: data.verificationCode! },
-      {
-        onSuccess: () => {
-          useStore.setState({
-            snackbarText: "تم تسجيل الدخول بنجاح",
-          });
-          router.push("/(drawer)/(homeStack)");
-        },
-      }
-    );
-  };
-
-  if (isLoading) return <Loading />;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -84,36 +66,36 @@ const SignIn = () => {
       >
         <Box flex={1}>
           <Box height={"25%"} justifyContent="center" alignItems="center">
-            <Feather name="user" color={Colors.primary} size={IconSize.xl} />
-            <ReText variant="DisplaySmall">تسجيل الدخول</ReText>
+            <Animated.View
+              entering={FadeInUp.withInitialValues({
+                transform: [{ translateY: vs(-25) }],
+              }).duration(600)}
+            >
+              <Feather name="user" color={Colors.primary} size={IconSize.xl} />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInUp.withInitialValues({
+                transform: [{ translateY: vs(-25) }],
+              })
+                .duration(600)
+                .delay(200)}
+            >
+              <ReText variant="DisplaySmall">تسجيل الدخول</ReText>
+            </Animated.View>
           </Box>
           <Box height={vs(32)} />
-          <ControlledInput
-            control={control}
-            name="phoneNumber"
-            label={"رقم الهاتف"}
-            placeholder="770000000"
-            inputMode="numeric"
-            keyboardType="numeric"
-            contentStyle={{
-              height: vs(52),
-              textAlignVertical: "center",
-            }}
-            right={
-              <TextInput.Affix
-                text="+962"
-                textStyle={{
-                  color: Colors.primary,
-                  height: vs(42),
-                }}
-              />
-            }
-          />
-          {showValidation && (
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(400)}
+          >
             <ControlledInput
               control={control}
-              name="verificationCode"
-              label={"رمز التحقق"}
+              name="phoneNumber"
+              label={"رقم الهاتف"}
+              placeholder="770000000"
               inputMode="numeric"
               keyboardType="numeric"
               contentStyle={{
@@ -121,30 +103,48 @@ const SignIn = () => {
                 textAlignVertical: "center",
               }}
               right={
-                <TextInput.Icon
-                  icon={"check"}
-                  color={Colors.primary3}
-                  onPress={handleSubmit(onSubmitCode)}
+                <TextInput.Affix
+                  text="+962"
+                  textStyle={{
+                    color: Colors.primary,
+                    height: vs(42),
+                  }}
                 />
               }
             />
-          )}
+          </Animated.View>
           <Box height={vs(32)} />
-          <CustomButton
-            mode="contained"
-            onPress={handleSubmit(onSubmit)}
-            title="تسجيل الدخول"
-          />
-          <TouchableOpacity onPress={() => router.push("/sign-up")}>
-            <ReText
-              marginTop="hm"
-              marginHorizontal="hs"
-              textAlign="left"
-              variant="BodySmall"
-            >
-              ليس لديك حساب؟ سجل الآن
-            </ReText>
-          </TouchableOpacity>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(600)}
+          >
+            <CustomButton
+              mode="contained"
+              onPress={handleSubmit(onSubmit)}
+              title="تسجيل الدخول"
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(800)}
+          >
+            <TouchableOpacity onPress={() => router.push("/sign-up")}>
+              <ReText
+                marginTop="hm"
+                marginHorizontal="hs"
+                textAlign="left"
+                variant="BodySmall"
+              >
+                ليس لديك حساب؟ سجل الآن
+              </ReText>
+            </TouchableOpacity>
+          </Animated.View>
         </Box>
       </ScrollView>
     </SafeAreaView>

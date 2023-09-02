@@ -11,24 +11,19 @@ import ControlledInput from "@components/controlledInput";
 import { ScrollView, TouchableOpacity } from "react-native";
 import Snackbar from "@components/snackbar";
 import { SignUpSchemaType, signUpSchema } from "@src/types/schema";
-import { useRef, useState } from "react";
-import { verifyCodeMutation } from "@apis/auth";
-import Loading from "@components/loading";
+import { useRef } from "react";
 import CustomButton from "@components/ui/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 import { auth, firebaseConfig } from "@src/firebase.config";
 import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const SingUp = () => {
   const recaptchaVerifier = useRef(null);
-  const [showValidation, setShowValidation] = useState(false);
-  const [verificationId, setVerificationId] = useState("");
-  const { mutate: verifyCode, isLoading: isLoadingVerifyCode } =
-    verifyCodeMutation();
 
-  const { control, handleSubmit, getValues } = useForm<SignUpSchemaType>({
+  const { control, handleSubmit } = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
   });
 
@@ -41,33 +36,19 @@ const SingUp = () => {
           recaptchaVerifier.current!
         )
         .then((verificationId) => {
-          setVerificationId(verificationId);
-          setShowValidation(true);
           useStore.setState({
             snackbarText:
               "تم الربط مع سند بنجاح يرجى، لقد تم إرسال رسالة تحقق إلى هاتفك",
           });
+          router.push(
+            // @ts-ignore
+            `/verification?verificationId=${verificationId}&phone=+962${data.phoneNumber}&name=${data.name}`
+          );
         });
     } catch (error: any) {
       throw new Error(error.message);
     }
   };
-
-  const onSubmitCode = (data: SignUpSchemaType) => {
-    verifyCode(
-      { verificationId, code: data.verificationCode!, name: getValues("name") },
-      {
-        onSuccess: () => {
-          useStore.setState({
-            snackbarText: "تم تسجيل الدخول بنجاح",
-          });
-          router.push("/(drawer)/(homeStack)");
-        },
-      }
-    );
-  };
-
-  if (isLoadingVerifyCode) return <Loading />;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -86,43 +67,51 @@ const SingUp = () => {
       >
         <Box flex={1}>
           <Box height={"25%"} justifyContent="center" alignItems="center">
-            <Feather name="user" color={Colors.primary} size={IconSize.xl} />
-            <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
+            <Animated.View
+              entering={FadeInUp.withInitialValues({
+                transform: [{ translateY: vs(-25) }],
+              }).duration(600)}
+            >
+              <Feather name="user" color={Colors.primary} size={IconSize.xl} />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInUp.withInitialValues({
+                transform: [{ translateY: vs(-25) }],
+              })
+                .duration(600)
+                .delay(200)}
+            >
+              <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
+            </Animated.View>
           </Box>
           <Box height={vs(32)} />
-          <ControlledInput
-            control={control}
-            name="name"
-            label={"الاسم"}
-            autoComplete="name"
-            textContentType="name"
-          />
-          <ControlledInput
-            control={control}
-            name="phoneNumber"
-            label={"رقم الهاتف"}
-            placeholder="770000000"
-            inputMode="numeric"
-            keyboardType="numeric"
-            contentStyle={{
-              height: vs(52),
-              textAlignVertical: "center",
-            }}
-            right={
-              <TextInput.Affix
-                text="+962"
-                textStyle={{
-                  color: Colors.primary,
-                  height: vs(42),
-                }}
-              />
-            }
-          />
-          {showValidation && (
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(400)}
+          >
             <ControlledInput
               control={control}
-              name="verificationCode"
-              label={"رمز التحقق"}
+              name="name"
+              label={"الاسم"}
+              autoComplete="name"
+              textContentType="name"
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(600)}
+          >
+            <ControlledInput
+              control={control}
+              name="phoneNumber"
+              label={"رقم الهاتف"}
+              placeholder="770000000"
               inputMode="numeric"
               keyboardType="numeric"
               contentStyle={{
@@ -130,30 +119,48 @@ const SingUp = () => {
                 textAlignVertical: "center",
               }}
               right={
-                <TextInput.Icon
-                  icon={"check"}
-                  color={Colors.primary3}
-                  onPress={handleSubmit(onSubmitCode)}
+                <TextInput.Affix
+                  text="+962"
+                  textStyle={{
+                    color: Colors.primary,
+                    height: vs(42),
+                  }}
                 />
               }
             />
-          )}
+          </Animated.View>
           <Box height={vs(32)} />
-          <CustomButton
-            mode="contained"
-            onPress={handleSubmit(onSubmit)}
-            title="تسجيل"
-          />
-          <TouchableOpacity onPress={() => router.push("/sign-in")}>
-            <ReText
-              marginTop="hm"
-              marginHorizontal="hs"
-              textAlign="left"
-              variant="BodySmall"
-            >
-              لديك حساب؟ تسجيل الدخول
-            </ReText>
-          </TouchableOpacity>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(800)}
+          >
+            <CustomButton
+              mode="contained"
+              onPress={handleSubmit(onSubmit)}
+              title="تسجيل"
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(1000)}
+          >
+            <TouchableOpacity onPress={() => router.push("/sign-in")}>
+              <ReText
+                marginTop="hm"
+                marginHorizontal="hs"
+                textAlign="left"
+                variant="BodySmall"
+              >
+                لديك حساب؟ تسجيل الدخول
+              </ReText>
+            </TouchableOpacity>
+          </Animated.View>
         </Box>
       </ScrollView>
     </SafeAreaView>

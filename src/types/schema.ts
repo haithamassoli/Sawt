@@ -7,14 +7,6 @@ export const validationSchema = z.object({
     })
     .min(9, "رقم الهاتف يجب أن يكتب مثل 770000000")
     .max(9, "رقم الهاتف يجب أن يكتب مثل 770000000"),
-  verificationCode: z.optional(
-    z
-      .string({
-        required_error: "رمز التحقق يجب أن لا يكون فارغًا",
-      })
-      .min(6, "رمز التحقق يجب أن يكون 6 أرقام")
-      .max(6, "رمز التحقق يجب أن يكون 6 أرقام")
-  ),
 });
 
 export type ValidationSchemaType = z.infer<typeof validationSchema>;
@@ -31,39 +23,20 @@ export const signUpSchema = z.object({
     })
     .min(9, "رقم الهاتف يجب أن يكتب مثل 770000000")
     .max(9, "رقم الهاتف يجب أن يكتب مثل 770000000"),
-  verificationCode: z.optional(
-    z
-      .string({
-        required_error: "رمز التحقق يجب أن لا يكون فارغًا",
-      })
-      .min(6, "رمز التحقق يجب أن يكون 6 أرقام")
-      .max(6, "رمز التحقق يجب أن يكون 6 أرقام")
-  ),
 });
 
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
 
-export const validationIdCodeSchema = z.object({
-  idCode: z
+export const verificationCodeSchema = z.object({
+  verificationCode: z
     .string({
-      required_error: "رقم الهوية يجب أن لا يكون فارغًا",
-    })
-    .min(10, "رقم الهوية يجب أن يكون 10 أرقام")
-    .max(10, "رقم الهوية يجب أن يكون 10 أرقام"),
-  phoneNumber: z
-    .string({
-      required_error: "رقم الهاتف يجب أن لا يكون فارغًا",
-    })
-    .min(9, "رقم الهاتف يجب أن يكتب مثل +962770000000")
-    .max(9, "رقم الهاتف يجب أن يكتب مثل +962770000000"),
-  verificationCode: z.optional(
-    z.string({
       required_error: "رمز التحقق يجب أن لا يكون فارغًا",
     })
-  ),
+    .min(6, "رمز التحقق يجب أن يكون 6 أرقام")
+    .max(6, "رمز التحقق يجب أن يكون 6 أرقام"),
 });
 
-export type ValidationIdCodeSchemaType = z.infer<typeof validationIdCodeSchema>;
+export type VerificationCodeSchemaType = z.infer<typeof verificationCodeSchema>;
 
 export const validationElectoralSchema = z.object({
   electoral: z
