@@ -4,20 +4,25 @@ type InfoTableProps = {
   name: string;
   id: string;
   phone: string;
-  electoralNumber: string;
+  governorate: string;
   electoralDistrict: string;
 };
 
 const InfoTable = ({
   name,
   electoralDistrict,
-  electoralNumber,
+  governorate,
   id,
   phone,
 }: InfoTableProps) => {
   return (
-    <Box borderRadius="l">
-      <Box backgroundColor="primary" paddingVertical="vs">
+    <>
+      <Box
+        backgroundColor="primary"
+        paddingVertical="vs"
+        borderTopLeftRadius="m"
+        borderTopRightRadius="m"
+      >
         <ReText
           variant="TitleMedium"
           fontFamily="CairoBold"
@@ -60,7 +65,7 @@ const InfoTable = ({
           paddingVertical="vxs"
         >
           <ReText variant="BodyLarge" textAlign="center">
-            الدائرة الانتخابية
+            المحافظة
           </ReText>
         </Box>
         <Box
@@ -71,7 +76,7 @@ const InfoTable = ({
           paddingVertical="vxs"
         >
           <ReText variant="BodyLarge" textAlign="center">
-            {electoralDistrict}
+            {governorate}
           </ReText>
         </Box>
       </Box>
@@ -84,7 +89,7 @@ const InfoTable = ({
           paddingVertical="vxs"
         >
           <ReText variant="BodyLarge" textAlign="center">
-            رقم الدائرة الانتخابية
+            الدائرة الانتخابية
           </ReText>
         </Box>
         <Box
@@ -95,7 +100,7 @@ const InfoTable = ({
           paddingVertical="vxs"
         >
           <ReText variant="BodyLarge" textAlign="center">
-            {electoralNumber}
+            {electoralDistrict}
           </ReText>
         </Box>
       </Box>
@@ -130,6 +135,7 @@ const InfoTable = ({
           borderColor="black6"
           paddingHorizontal="hxs"
           paddingVertical="vxs"
+          borderBottomLeftRadius="m"
         >
           <ReText variant="BodyLarge" textAlign="center">
             رقم الهاتف
@@ -141,13 +147,14 @@ const InfoTable = ({
           borderColor="black6"
           paddingHorizontal="hxs"
           paddingVertical="vxs"
+          borderBottomRightRadius="m"
         >
           <ReText variant="BodyLarge" textAlign="center">
             {phone}
           </ReText>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

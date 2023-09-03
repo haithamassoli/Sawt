@@ -43,7 +43,7 @@ const ImagesCarousel = ({ images }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Box width={width - hs(32)} borderRadius="l" aspectRatio={68 / 39}>
+      <Box width={width - hs(32)} borderRadius="l" aspectRatio={68 / 30}>
         <ScrollView
           ref={scrollRef}
           contentContainerStyle={{
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
     width: width - hs(32),
-    aspectRatio: 68 / 39,
+    aspectRatio: 68 / 30,
   },
   image: {
     borderRadius: ms(12),
     width: width - hs(32),
-    aspectRatio: 68 / 39,
+    aspectRatio: 68 / 30,
   },
   dotsContainer: {
     flexDirection: "row",

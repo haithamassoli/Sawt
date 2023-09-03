@@ -1,17 +1,10 @@
-import InfoTable from "@components/infoTable";
 import ElectionsButton from "@components/ui/electionsButton";
 import { Box, ReText } from "@styles/theme";
-import { Stack } from "expo-router";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
 const ViceInfoScreen = () => {
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: "د. محمد عبد الله الحسين",
-        }}
-      />
       <Box
         flex={1}
         paddingHorizontal="hm"
@@ -20,7 +13,12 @@ const ViceInfoScreen = () => {
       >
         <Box>
           <Animated.View entering={FadeInUp.duration(600)}>
-            <Box backgroundColor="primary" paddingVertical="vs">
+            <Box
+              backgroundColor="primary"
+              paddingVertical="vs"
+              borderTopLeftRadius="m"
+              borderTopRightRadius="m"
+            >
               <ReText
                 variant="TitleMedium"
                 fontFamily="CairoBold"
@@ -36,15 +34,17 @@ const ViceInfoScreen = () => {
             borderColor="black6"
             paddingHorizontal="hxs"
             paddingVertical="vxs"
+            borderBottomLeftRadius="m"
+            borderBottomRightRadius="m"
           >
             <ReText variant="BodyLarge" textAlign="left">
-              حاصل على شهادة البكالوريوس في القانون من الجامعة الأردنية.
+              ● حاصل على شهادة البكالوريوس في القانون من الجامعة الأردنية.
             </ReText>
             <ReText variant="BodyLarge" textAlign="left">
-              درس الماجستير والدكتوراه في القانون الدولي من جامعة واشنطن.
+              ● درس الماجستير والدكتوراه في القانون الدولي من جامعة واشنطن.
             </ReText>
             <ReText variant="BodyLarge" textAlign="left">
-              عمل مستشارا في وزارة الداخلية.
+              ● عمل مستشارا في وزارة الداخلية.
             </ReText>
           </Box>
         </Box>

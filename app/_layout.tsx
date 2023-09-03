@@ -72,11 +72,6 @@ const getTheme = async () => {
   }
 };
 
-const getUserFromStorage = async () => {
-  const user = await getDataFromStorage("user");
-  if (user) useStore.setState({ user });
-};
-
 export default function RootLayout() {
   TextInput.defaultProps = TextInput.defaultProps || {};
   TextInput.defaultProps.allowFontScaling = false;
@@ -113,7 +108,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     forceRTL();
-    getUserFromStorage();
     getTheme();
     // deleteAllStorage();
   }, []);

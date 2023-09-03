@@ -19,6 +19,7 @@ import Snackbar from "@components/snackbar";
 import { ScrollView } from "react-native";
 import { addComplaintMutation } from "@apis/complaints";
 import { router } from "expo-router";
+import Colors from "@styles/colors";
 
 const ComplaintsScreen = () => {
   const [imageList, pickImage, isLoadingImage] = useImagePicker();
@@ -53,6 +54,7 @@ const ComplaintsScreen = () => {
       contentContainerStyle={{
         flexGrow: 1,
       }}
+      keyboardShouldPersistTaps="handled"
     >
       <Snackbar />
       <Box
@@ -80,6 +82,10 @@ const ComplaintsScreen = () => {
               placeholder={"أدخل الشكوى أو الإقتراح"}
               inputMode="text"
               textAlignVertical="top"
+              outlineStyle={{
+                borderRadius: ms(18),
+                backgroundColor: Colors.lightBackground,
+              }}
               style={{
                 width: "100%",
               }}
@@ -134,7 +140,7 @@ const ComplaintsScreen = () => {
         </Box>
         <CustomButton
           title="إرسال"
-          mode="contained-tonal"
+          mode="contained"
           onPress={handleSubmit(onSubmit)}
         />
       </Box>

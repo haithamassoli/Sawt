@@ -38,7 +38,6 @@ const login = async (code: string, verificationId: string) => {
         phoneNumber: doc.data().phoneNumber,
       };
     });
-    await storeDataToStorage("user", userWithData);
     return userWithData;
   } catch (error: any) {
     throw new Error(error.message);
@@ -74,7 +73,6 @@ const verifyCode = async (
       createdAt: new Date(),
     });
     const userWithData = { ...user, name: name, phoneNumber: user.phoneNumber };
-    storeDataToStorage("user", userWithData);
     return userWithData;
   } catch (error: any) {
     throw new Error(error.message);

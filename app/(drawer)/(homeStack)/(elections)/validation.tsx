@@ -19,13 +19,12 @@ const ValidationScreen = () => {
     resolver: zodResolver(validationElectoralSchema),
   });
 
-  const onSubmit = async (data: ValidationElectoralSchemaType) => {
+  const onSubmit = (data: ValidationElectoralSchemaType) => {
     console.log(data);
     const userWithElectoralNumber = {
       ...user,
       electoralNumber: data.electoral,
     };
-    await storeDataToStorage("user", userWithElectoralNumber);
     useStore.setState({ user: userWithElectoralNumber });
     router.replace("/user-info");
   };

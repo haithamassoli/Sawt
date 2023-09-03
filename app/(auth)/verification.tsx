@@ -1,5 +1,6 @@
 import { loginMutation, verifyCodeMutation } from "@apis/auth";
 import Loading from "@components/loading";
+import Snackbar from "@components/snackbar";
 import CustomButton from "@components/ui/customButton";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,7 +47,7 @@ const VerificationCodeScreen = () => {
             useStore.setState({
               snackbarText: "تم تسجيل الدخول بنجاح",
             });
-            router.replace("/(drawer)/(homeStack)");
+            router.replace("/(drawer)/(homeStack)/");
           },
         }
       );
@@ -54,9 +55,10 @@ const VerificationCodeScreen = () => {
       verifyCode(
         { verificationId, code: data.verificationCode!, name: name! },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
             useStore.setState({
               snackbarText: "تم تسجيل الدخول بنجاح",
+              user: data,
             });
             router.replace("/(drawer)/(homeStack)/");
           },
@@ -69,7 +71,11 @@ const VerificationCodeScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <Snackbar />
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
         <TouchableOpacity
           onPress={() => router.back()}
           style={{
