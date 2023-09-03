@@ -1,4 +1,4 @@
-import { ms } from "@utils/platform";
+import Header from "@components/header";
 import { Stack } from "expo-router";
 
 const HomeStack = () => {
@@ -7,51 +7,85 @@ const HomeStack = () => {
       screenOptions={{
         headerTitleAlign: "center",
         animation: "slide_from_left",
-        headerBackTitle: "رجوع",
-        headerBackTitleStyle: {
-          fontFamily: "CairoBold",
-          fontSize: ms(16),
-        },
-        headerTitleStyle: {
-          fontFamily: "CairoBold",
-          fontSize: ms(16),
-        },
+        autoHideHomeIndicator: true,
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="complaints"
-        options={{ title: "الشكاوى والإقتراحات" }}
+        options={{
+          header: (props) => (
+            <Header
+              title="الشكاوى والإقتراحات"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
+        }}
       />
-      <Stack.Screen name="polls" options={{ title: "استفتاءات" }} />
+      <Stack.Screen
+        name="polls"
+        options={{
+          header: (props) => (
+            <Header
+              title="استفتاءات"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
+        }}
+      />
       <Stack.Screen
         name="(elections)/validation"
         options={{
-          title: "الرقم الانتخابي",
+          header: (props) => (
+            <Header
+              title="الرقم الانتخابي"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
         }}
       />
       <Stack.Screen
         name="(elections)/user-info"
         options={{
-          title: "البيانات الشخصية",
+          header: (props) => (
+            <Header
+              title="البيانات الشخصية"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
         }}
       />
       <Stack.Screen
         name="(elections)/candidates"
         options={{
-          title: "المرشحين",
+          header: (props) => (
+            <Header
+              title="المرشحين في الدائرة الأولى"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
         }}
       />
       <Stack.Screen
         name="(elections)/results"
         options={{
-          title: "نتائج الانتخابات",
+          header: (props) => (
+            <Header
+              title="نتائج انتخابات الدائرة الأولى"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
         }}
       />
       <Stack.Screen
         name="(elections)/vice-info"
         options={{
-          title: "السيرة الذاتية",
+          header: (props) => (
+            <Header
+              title="السيرة الذاتية"
+              onPress={() => props.navigation.goBack()}
+            />
+          ),
         }}
       />
     </Stack>
