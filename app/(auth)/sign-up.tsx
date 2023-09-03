@@ -13,11 +13,12 @@ import Snackbar from "@components/snackbar";
 import { SignUpSchemaType, signUpSchema } from "@src/types/schema";
 import { useRef } from "react";
 import CustomButton from "@components/ui/customButton";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 import { auth, firebaseConfig } from "@src/firebase.config";
 import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const SingUp = () => {
   const recaptchaVerifier = useRef(null);
@@ -50,7 +51,12 @@ const SingUp = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Box
+      flex={1}
+      style={{
+        paddingTop: useSafeAreaInsets().top,
+      }}
+    >
       <Snackbar />
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
@@ -66,70 +72,132 @@ const SingUp = () => {
       >
         <Box flex={1}>
           <Box height={"25%"} justifyContent="center" alignItems="center">
-            <Feather name="user" color={Colors.primary} size={IconSize.xl} />
-            <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
+            <Animated.View
+              entering={FadeInUp.withInitialValues({
+                transform: [{ translateY: vs(-25) }],
+              }).duration(600)}
+            >
+              <Feather name="user" color={Colors.primary} size={IconSize.xl} />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInUp.withInitialValues({
+                transform: [{ translateY: vs(-25) }],
+              })
+                .duration(600)
+                .delay(100)}
+            >
+              <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
+            </Animated.View>
           </Box>
           <Box height={vs(24)} />
-          <ReText variant="LabelLarge" textAlign="left">
-            الاسم
-          </ReText>
-          <ControlledInput
-            control={control}
-            name="name"
-            mode="outlined"
-            placeholder="محمد أحمد"
-            autoComplete="name"
-            textContentType="name"
-            outlineStyle={{
-              borderRadius: ms(18),
-            }}
-            style={{
-              backgroundColor: Colors.lightBackground,
-            }}
-          />
-          <ReText variant="LabelLarge" textAlign="left">
-            رقم الهاتف
-          </ReText>
-          <ControlledInput
-            control={control}
-            name="phoneNumber"
-            mode="outlined"
-            placeholder="771234567"
-            inputMode="numeric"
-            keyboardType="numeric"
-            outlineStyle={{
-              borderRadius: ms(18),
-            }}
-            style={{
-              backgroundColor: Colors.lightBackground,
-            }}
-            right={
-              <TextInput.Affix
-                text="+962"
-                textStyle={{
-                  color: Colors.primary,
-                }}
-              />
-            }
-          />
-          <CustomButton
-            mode="contained"
-            onPress={handleSubmit(onSubmit)}
-            title="تسجيل"
-          />
-          <TouchableOpacity onPress={() => router.push("/sign-in")}>
-            <ReText
-              marginTop="hm"
-              marginHorizontal="hs"
-              textAlign="left"
-              variant="BodySmall"
-            >
-              لديك حساب؟ تسجيل الدخول
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(300)}
+          >
+            <ReText variant="LabelLarge" textAlign="left">
+              الاسم
             </ReText>
-          </TouchableOpacity>
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(400)}
+          >
+            <ControlledInput
+              control={control}
+              name="name"
+              mode="outlined"
+              placeholder="محمد أحمد"
+              autoComplete="name"
+              textContentType="name"
+              outlineStyle={{
+                borderRadius: ms(18),
+              }}
+              style={{
+                backgroundColor: Colors.lightBackground,
+              }}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(600)}
+          >
+            <ReText variant="LabelLarge" textAlign="left">
+              رقم الهاتف
+            </ReText>
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(700)}
+          >
+            <ControlledInput
+              control={control}
+              name="phoneNumber"
+              mode="outlined"
+              placeholder="771234567"
+              inputMode="numeric"
+              keyboardType="numeric"
+              outlineStyle={{
+                borderRadius: ms(18),
+              }}
+              style={{
+                backgroundColor: Colors.lightBackground,
+              }}
+              right={
+                <TextInput.Affix
+                  text="+962"
+                  textStyle={{
+                    color: Colors.primary,
+                  }}
+                />
+              }
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(900)}
+          >
+            <CustomButton
+              mode="contained"
+              onPress={handleSubmit(onSubmit)}
+              title="تسجيل"
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(1000)}
+          >
+            <TouchableOpacity onPress={() => router.push("/sign-in")}>
+              <ReText
+                marginTop="hm"
+                marginHorizontal="hs"
+                textAlign="left"
+                variant="BodySmall"
+              >
+                لديك حساب؟ تسجيل الدخول
+              </ReText>
+            </TouchableOpacity>
+          </Animated.View>
         </Box>
       </ScrollView>
-    </SafeAreaView>
+    </Box>
   );
 };
 

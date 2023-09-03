@@ -8,6 +8,8 @@ import CustomButton from "@components/ui/customButton";
 import { router } from "expo-router";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { Image } from "expo-image";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Colors from "@styles/colors";
 
 const OnBoarding = () => {
   const scrollRef = useRef<ScrollView>(null);
@@ -42,11 +44,14 @@ const OnBoarding = () => {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={setImageIndex}
         pagingEnabled
+        contentContainerStyle={{
+          marginTop: useSafeAreaInsets().top,
+          backgroundColor: Colors.primary,
+        }}
       >
         <Box
           flex={1}
           width={width}
-          backgroundColor="primary"
           paddingHorizontal="hl"
           justifyContent="space-evenly"
         >
@@ -78,12 +83,7 @@ const OnBoarding = () => {
             <CustomButton mode="elevated" title="التالي" onPress={onNext} />
           </Animated.View>
         </Box>
-        <Box
-          flex={1}
-          width={width}
-          backgroundColor="primary"
-          justifyContent="space-between"
-        >
+        <Box flex={1} width={width} justifyContent="space-between">
           {((selectedIndex === 1 && isIOS) ||
             (selectedIndex === 0 && !isIOS)) && (
             <Box

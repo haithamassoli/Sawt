@@ -1,9 +1,8 @@
-import { blurhash, storeDataToStorage, width } from "@utils/helper";
+import { width } from "@utils/helper";
 import { Box, ReText, Theme } from "@styles/theme";
 import { useNavigation, router } from "expo-router";
-import { logoutMutation } from "@apis/auth";
 import ImagesCarousel from "@components/imagesCarousel";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { ms, vs } from "@utils/platform";
 import { useTheme } from "@shopify/restyle";
@@ -19,10 +18,13 @@ const HomeScreen = () => {
   const navigation: any = useNavigation();
   const { user } = useStore();
 
-  const { mutate } = logoutMutation();
-
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Box
+      flex={1}
+      style={{
+        paddingTop: useSafeAreaInsets().top,
+      }}
+    >
       <Snackbar />
       <Box
         flexDirection="row"
@@ -114,7 +116,7 @@ const HomeScreen = () => {
           </Animated.View>
         ))}
       </Box>
-    </SafeAreaView>
+    </Box>
   );
 };
 
