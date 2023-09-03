@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { hs, vs } from "@utils/platform";
+import { hs, ms, vs } from "@utils/platform";
 import ControlledInput from "@components/controlledInput";
 import { ScrollView, TouchableOpacity } from "react-native";
 import Snackbar from "@components/snackbar";
@@ -18,7 +18,6 @@ import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 import { auth, firebaseConfig } from "@src/firebase.config";
 import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
-import Animated, { FadeInUp } from "react-native-reanimated";
 
 const SingUp = () => {
   const recaptchaVerifier = useRef(null);
@@ -67,100 +66,75 @@ const SingUp = () => {
       >
         <Box flex={1}>
           <Box height={"25%"} justifyContent="center" alignItems="center">
-            <Animated.View
-              entering={FadeInUp.withInitialValues({
-                transform: [{ translateY: vs(-25) }],
-              }).duration(600)}
-            >
-              <Feather name="user" color={Colors.primary} size={IconSize.xl} />
-            </Animated.View>
-            <Animated.View
-              entering={FadeInUp.withInitialValues({
-                transform: [{ translateY: vs(-25) }],
-              })
-                .duration(600)
-                .delay(200)}
-            >
-              <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
-            </Animated.View>
+            <Feather name="user" color={Colors.primary} size={IconSize.xl} />
+            <ReText variant="DisplaySmall">تسجيل حساب جديد</ReText>
           </Box>
-          <Box height={vs(32)} />
-          <Animated.View
-            entering={FadeInUp.withInitialValues({
-              transform: [{ translateY: vs(-25) }],
-            })
-              .duration(600)
-              .delay(400)}
-          >
-            <ControlledInput
-              control={control}
-              name="name"
-              label={"الاسم"}
-              autoComplete="name"
-              textContentType="name"
-            />
-          </Animated.View>
-          <Animated.View
-            entering={FadeInUp.withInitialValues({
-              transform: [{ translateY: vs(-25) }],
-            })
-              .duration(600)
-              .delay(600)}
-          >
-            <ControlledInput
-              control={control}
-              name="phoneNumber"
-              label={"رقم الهاتف"}
-              placeholder="770000000"
-              inputMode="numeric"
-              keyboardType="numeric"
-              contentStyle={{
-                height: vs(52),
-                textAlignVertical: "center",
-              }}
-              right={
-                <TextInput.Affix
-                  text="+962"
-                  textStyle={{
-                    color: Colors.primary,
-                    height: vs(42),
-                  }}
-                />
-              }
-            />
-          </Animated.View>
-          <Box height={vs(32)} />
-          <Animated.View
-            entering={FadeInUp.withInitialValues({
-              transform: [{ translateY: vs(-25) }],
-            })
-              .duration(600)
-              .delay(800)}
-          >
-            <CustomButton
-              mode="contained"
-              onPress={handleSubmit(onSubmit)}
-              title="تسجيل"
-            />
-          </Animated.View>
-          <Animated.View
-            entering={FadeInUp.withInitialValues({
-              transform: [{ translateY: vs(-25) }],
-            })
-              .duration(600)
-              .delay(1000)}
-          >
-            <TouchableOpacity onPress={() => router.push("/sign-in")}>
-              <ReText
-                marginTop="hm"
-                marginHorizontal="hs"
-                textAlign="left"
-                variant="BodySmall"
-              >
-                لديك حساب؟ تسجيل الدخول
-              </ReText>
-            </TouchableOpacity>
-          </Animated.View>
+          <Box height={vs(24)} />
+          <ReText variant="LabelLarge" textAlign="left">
+            الاسم
+          </ReText>
+          <ControlledInput
+            control={control}
+            name="name"
+            mode="outlined"
+            placeholder="محمد أحمد"
+            autoComplete="name"
+            textContentType="name"
+            outlineStyle={{
+              borderRadius: ms(18),
+            }}
+            contentStyle={{
+              height: vs(42),
+            }}
+            style={{
+              height: vs(46),
+              backgroundColor: Colors.lightBackground,
+            }}
+          />
+          <ReText variant="LabelLarge" textAlign="left">
+            رقم الهاتف
+          </ReText>
+          <ControlledInput
+            control={control}
+            name="phoneNumber"
+            mode="outlined"
+            placeholder="771234567"
+            inputMode="numeric"
+            keyboardType="numeric"
+            outlineStyle={{
+              borderRadius: ms(18),
+            }}
+            contentStyle={{
+              height: vs(42),
+            }}
+            style={{
+              height: vs(46),
+              backgroundColor: Colors.lightBackground,
+            }}
+            right={
+              <TextInput.Affix
+                text="+962"
+                textStyle={{
+                  color: Colors.primary,
+                }}
+              />
+            }
+          />
+          <CustomButton
+            mode="contained"
+            onPress={handleSubmit(onSubmit)}
+            title="تسجيل"
+          />
+          <TouchableOpacity onPress={() => router.push("/sign-in")}>
+            <ReText
+              marginTop="hm"
+              marginHorizontal="hs"
+              textAlign="left"
+              variant="BodySmall"
+            >
+              لديك حساب؟ تسجيل الدخول
+            </ReText>
+          </TouchableOpacity>
         </Box>
       </ScrollView>
     </SafeAreaView>

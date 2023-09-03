@@ -5,8 +5,8 @@ export const validationSchema = z.object({
     .string({
       required_error: "رقم الهاتف يجب أن لا يكون فارغًا",
     })
-    .min(9, "رقم الهاتف يجب أن يكتب مثل 770000000")
-    .max(9, "رقم الهاتف يجب أن يكتب مثل 770000000"),
+    .min(9, "رقم الهاتف يجب أن يكتب مثل 771234567")
+    .max(9, "رقم الهاتف يجب أن يكتب مثل 771234567"),
 });
 
 export type ValidationSchemaType = z.infer<typeof validationSchema>;
@@ -21,8 +21,8 @@ export const signUpSchema = z.object({
     .string({
       required_error: "رقم الهاتف يجب أن لا يكون فارغًا",
     })
-    .min(9, "رقم الهاتف يجب أن يكتب مثل 770000000")
-    .max(9, "رقم الهاتف يجب أن يكتب مثل 770000000"),
+    .min(9, "رقم الهاتف يجب أن يكتب مثل 771234567")
+    .max(9, "رقم الهاتف يجب أن يكتب مثل 771234567"),
 });
 
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
