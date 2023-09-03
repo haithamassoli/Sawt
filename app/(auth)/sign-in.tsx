@@ -82,11 +82,7 @@ const SignIn = () => {
             outlineStyle={{
               borderRadius: ms(18),
             }}
-            contentStyle={{
-              height: vs(42),
-            }}
             style={{
-              height: vs(46),
               backgroundColor: Colors.lightBackground,
             }}
             right={

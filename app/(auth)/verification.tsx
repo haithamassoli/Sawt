@@ -150,7 +150,7 @@ const VerificationCodeScreen = () => {
           }}
         >
           <CustomButton
-            mode="contained-tonal"
+            mode="contained"
             title="تسجيل الدخول"
             onPress={handleSubmit(onSubmit)}
           />
