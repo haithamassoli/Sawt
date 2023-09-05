@@ -45,7 +45,7 @@ const OnBoarding = () => {
         onMomentumScrollEnd={setImageIndex}
         pagingEnabled
         contentContainerStyle={{
-          marginTop: useSafeAreaInsets().top,
+          marginTop: !isIOS ? useSafeAreaInsets().top : 0,
           backgroundColor: Colors.primary,
         }}
       >

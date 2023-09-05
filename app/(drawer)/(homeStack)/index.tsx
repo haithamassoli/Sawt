@@ -104,7 +104,6 @@ const HomeScreen = () => {
                       marginTop: vs(16),
                     }}
                     contentFit="contain"
-                    tintColor={item.id === 3 ? colors.black5 : null}
                     transition={400}
                   />
                 </Box>
