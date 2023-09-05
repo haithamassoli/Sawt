@@ -4,14 +4,10 @@ import ElectionsButton from "@components/ui/electionsButton";
 import { Box } from "@styles/theme";
 import { useStore } from "@zustand/store";
 import { router } from "expo-router";
-import { useEffect } from "react";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
 const UserInfoScreen = () => {
   const { user } = useStore();
-  useEffect(() => {
-    if (!user?.electoralNumber) router.replace("/validation");
-  }, [user]);
   return (
     <Box flex={1}>
       <Snackbar />
@@ -23,11 +19,11 @@ const UserInfoScreen = () => {
       >
         <Animated.View entering={FadeInUp.duration(600)}>
           <InfoTable
-            name="خالد احمد عمر سمير"
+            name={user?.name!}
             electoralDistrict="الأولى"
             governorate="العاصمة"
-            id="0123456789"
-            phone={user?.phoneNumber || "0771234567"}
+            id={user?.nationalId!}
+            phone={user?.phoneNumber!}
           />
         </Animated.View>
         <Box marginBottom="v4xl">

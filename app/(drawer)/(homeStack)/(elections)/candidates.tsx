@@ -1,6 +1,7 @@
 import Snackbar from "@components/snackbar";
 import CustomButton from "@components/ui/customButton";
 import { Feather } from "@expo/vector-icons";
+import { vice } from "@src/data/vice";
 import { Box, ReText } from "@styles/theme";
 import { getDataFromStorage, storeDataToStorage, width } from "@utils/helper";
 import { hs, ms, vs } from "@utils/platform";
@@ -11,34 +12,6 @@ import { useState } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import { Modal, Portal } from "react-native-paper";
 import Animated, { FadeInUp } from "react-native-reanimated";
-
-const data = [
-  {
-    id: 1,
-    name: "المرشح الأول",
-    description: "الوصف",
-  },
-  {
-    id: 2,
-    name: "المرشح الثاني",
-    description: "الوصف",
-  },
-  {
-    id: 3,
-    name: "المرشح الثالث",
-    description: "الوصف",
-  },
-  {
-    id: 4,
-    name: "المرشح الرابع",
-    description: "الوصف",
-  },
-  {
-    id: 5,
-    name: "المرشح الخامس",
-    description: "الوصف",
-  },
-];
 
 const CandidatesScreen = () => {
   const [selected, setSelected] = useState({});
@@ -65,10 +38,10 @@ const CandidatesScreen = () => {
         snackbarText: "تم التصويت من قبل",
       });
     }
-    await storeDataToStorage("vote", selected);
     hideModal();
-    useStore.setState({ snackbarText: "تم التصويت بنجاح" });
-    router.replace("/(drawer)/(homeStack)/(elections)/user-info");
+    useStore.setState({ snackbarText: "أدخل الرقم الانتخابي للتصويت" });
+    // @ts-ignore
+    router.push(`/validation?id=${selected?.id}`);
   };
 
   return (
@@ -87,7 +60,10 @@ const CandidatesScreen = () => {
           }}
         >
           <ReText variant="BodyLarge" textAlign="left" marginBottom="vs">
-            هل أنت متأكد من التصويت لهذا المرشح؟
+            {`هل أنت متأكد من التصويت للمرشح ${
+              // @ts-ignore
+              selected?.name && selected?.name.split(" ")[1]
+            }؟`}
           </ReText>
           <Box flexDirection="row" justifyContent="space-around" gap="hl">
             <CustomButton
@@ -124,7 +100,7 @@ const CandidatesScreen = () => {
           paddingHorizontal: hs(16),
           paddingVertical: vs(16),
         }}
-        data={data}
+        data={vice}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item, index }) => (
           <Animated.View
@@ -161,7 +137,10 @@ const CandidatesScreen = () => {
                     {item.name}
                   </ReText>
                 </Box>
-                <TouchableOpacity onPress={() => router.push("/vice-info")}>
+                <TouchableOpacity
+                  // @ts-ignore
+                  onPress={() => router.push("/vice-info?id=" + item?.id)}
+                >
                   <Feather name="info" size={ms(26)} color="black" />
                 </TouchableOpacity>
               </Box>
