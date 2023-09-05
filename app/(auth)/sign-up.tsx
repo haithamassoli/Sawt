@@ -1,7 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import Colors from "@styles/colors";
 import { IconSize } from "@styles/size";
-import { Box, ReText } from "@styles/theme";
+import { Box, ReText, Theme } from "@styles/theme";
 import { router } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
@@ -19,9 +18,11 @@ import { PhoneAuthProvider } from "firebase/auth";
 import { auth, firebaseConfig } from "@src/firebase.config";
 import { FirebaseRecaptchaVerifierModal } from "@components/firebase-recaptcha/modal";
 import Animated, { FadeInUp } from "react-native-reanimated";
+import { useTheme } from "@shopify/restyle";
 
 const SingUp = () => {
   const recaptchaVerifier = useRef(null);
+  const { colors } = useTheme<Theme>();
 
   const { control, handleSubmit } = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
@@ -42,7 +43,7 @@ const SingUp = () => {
           });
           router.push(
             // @ts-ignore
-            `/verification?verificationId=${verificationId}&phone=+962${data.phoneNumber}&name=${data.name}`
+            `/verification?verificationId=${verificationId}&phone=+962${data.phoneNumber}&name=${data.name}&nationalId=${data.nationalId}`
           );
         });
     } catch (error: any) {
@@ -77,7 +78,7 @@ const SingUp = () => {
                 transform: [{ translateY: vs(-25) }],
               }).duration(600)}
             >
-              <Feather name="user" color={Colors.primary} size={IconSize.xl} />
+              <Feather name="user" color={colors.primary} size={IconSize.xl} />
             </Animated.View>
             <Animated.View
               entering={FadeInUp.withInitialValues({
@@ -119,7 +120,7 @@ const SingUp = () => {
                 borderRadius: ms(18),
               }}
               style={{
-                backgroundColor: Colors.lightBackground,
+                backgroundColor: colors.secBackground,
               }}
             />
           </Animated.View>
@@ -152,13 +153,13 @@ const SingUp = () => {
                 borderRadius: ms(18),
               }}
               style={{
-                backgroundColor: Colors.lightBackground,
+                backgroundColor: colors.secBackground,
               }}
               right={
                 <TextInput.Affix
                   text="+962"
                   textStyle={{
-                    color: Colors.primary,
+                    color: colors.primary,
                   }}
                 />
               }
@@ -171,6 +172,37 @@ const SingUp = () => {
               .duration(600)
               .delay(900)}
           >
+            <ReText variant="LabelLarge" textAlign="left">
+              الرقم الوطني
+            </ReText>
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(1000)}
+          >
+            <ControlledInput
+              control={control}
+              name="nationalId"
+              mode="outlined"
+              placeholder="2000123456"
+              outlineStyle={{
+                borderRadius: ms(18),
+              }}
+              style={{
+                backgroundColor: colors.secBackground,
+              }}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInUp.withInitialValues({
+              transform: [{ translateY: vs(-25) }],
+            })
+              .duration(600)
+              .delay(1200)}
+          >
             <CustomButton
               mode="contained"
               onPress={handleSubmit(onSubmit)}
@@ -182,7 +214,7 @@ const SingUp = () => {
               transform: [{ translateY: vs(-25) }],
             })
               .duration(600)
-              .delay(1000)}
+              .delay(1400)}
           >
             <TouchableOpacity onPress={() => router.push("/sign-in")}>
               <ReText

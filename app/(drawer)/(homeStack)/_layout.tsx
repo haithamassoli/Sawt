@@ -38,7 +38,7 @@ const HomeStack = () => {
         options={{
           header: (props) => (
             <Header
-              title="الرقم الانتخابي"
+              title="التحقق من الرقم الانتخابي"
               onPress={() => props.navigation.goBack()}
             />
           ),
@@ -77,17 +77,7 @@ const HomeStack = () => {
           ),
         }}
       />
-      <Stack.Screen
-        name="(elections)/vice-info"
-        options={{
-          header: (props) => (
-            <Header
-              title="السيرة الذاتية"
-              onPress={() => props.navigation.goBack()}
-            />
-          ),
-        }}
-      />
+      <Stack.Screen name="(elections)/vice-info" />
     </Stack>
   );
 };

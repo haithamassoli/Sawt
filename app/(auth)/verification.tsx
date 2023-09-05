@@ -4,12 +4,12 @@ import Snackbar from "@components/snackbar";
 import CustomButton from "@components/ui/customButton";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTheme } from "@shopify/restyle";
 import {
   VerificationCodeSchemaType,
   verificationCodeSchema,
 } from "@src/types/schema";
-import Colors from "@styles/colors";
-import { Box, ReText } from "@styles/theme";
+import { Box, ReText, Theme } from "@styles/theme";
 import { hs, ms, vs } from "@utils/platform";
 import { useStore } from "@zustand/store";
 import { router, useLocalSearchParams } from "expo-router";
@@ -21,6 +21,7 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const VerificationCodeScreen = () => {
+  const { colors } = useTheme<Theme>();
   const { mutate, isLoading } = loginMutation();
   const { mutate: verifyCode, isLoading: isLoadingVerifyCode } =
     verifyCodeMutation();
@@ -29,8 +30,13 @@ const VerificationCodeScreen = () => {
     verificationId,
     phone,
     name,
-  }: { verificationId: string; phone: string; name?: string } =
-    useLocalSearchParams();
+    nationalId,
+  }: {
+    verificationId: string;
+    phone: string;
+    name?: string;
+    nationalId: string;
+  } = useLocalSearchParams();
 
   console.log(verificationId, phone, name);
 
@@ -53,11 +59,17 @@ const VerificationCodeScreen = () => {
       );
     } else {
       verifyCode(
-        { verificationId, code: data.verificationCode!, name: name! },
+        {
+          verificationId,
+          code: data.verificationCode!,
+          name: name!,
+          nationalId: nationalId!,
+        },
         {
           onSuccess: (data) => {
             useStore.setState({
               snackbarText: "تم تسجيل الدخول بنجاح",
+              // @ts-ignore
               user: data,
             });
             router.replace("/(drawer)/(homeStack)/");
@@ -89,11 +101,11 @@ const VerificationCodeScreen = () => {
             entering={FadeInUp.duration(600)}
             style={{ flexDirection: "row" }}
           >
-            <Feather name="chevron-left" size={ms(24)} color={Colors.primary} />
+            <Feather name="chevron-left" size={ms(24)} color={colors.primary} />
             <Feather
               name="chevron-left"
               size={ms(24)}
-              color={Colors.primary}
+              color={colors.primary}
               style={{
                 marginLeft: hs(-12),
               }}
@@ -130,7 +142,13 @@ const VerificationCodeScreen = () => {
                   handleTextChange={onChange}
                   keyboardType="numeric"
                   containerStyle={styles.textInputContainer}
-                  textInputStyle={styles.roundedTextInput}
+                  // @ts-ignore
+                  textInputStyle={[
+                    styles.roundedTextInput,
+                    {
+                      color: colors.text,
+                    },
+                  ]}
                   inputCount={6}
                   inputCellLength={1}
                 />
@@ -175,7 +193,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
     paddingHorizontal: hs(8),
     paddingVertical: vs(20),
   },

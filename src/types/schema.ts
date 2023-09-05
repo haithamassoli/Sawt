@@ -23,6 +23,12 @@ export const signUpSchema = z.object({
     })
     .min(9, "رقم الهاتف يجب أن يكتب مثل 771234567")
     .max(9, "رقم الهاتف يجب أن يكتب مثل 771234567"),
+  nationalId: z
+    .string({
+      required_error: "الرقم الوطني يجب أن لا يكون فارغًا",
+    })
+    .min(10, "الرقم الوطني يجب أن يكون 10 أرقام")
+    .max(10, "الرقم الوطني يجب أن يكون 10 أرقام"),
 });
 
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
@@ -91,4 +97,5 @@ export interface IUser {
   idNumber: string;
   name: string;
   electoralNumber?: string;
+  nationalId: string;
 }

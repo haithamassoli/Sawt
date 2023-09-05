@@ -1,7 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import Colors from "@styles/colors";
 import { IconSize } from "@styles/size";
-import { Box, ReText } from "@styles/theme";
+import { Box, ReText, Theme } from "@styles/theme";
 import { router } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { useForm } from "react-hook-form";
@@ -19,9 +18,11 @@ import { auth, firebaseConfig } from "@src/firebase.config";
 import { useStore } from "@zustand/store";
 import { PhoneAuthProvider } from "firebase/auth";
 import Animated, { FadeInUp } from "react-native-reanimated";
+import { useTheme } from "@shopify/restyle";
 
 const SignIn = () => {
   const recaptchaVerifier = useRef(null);
+  const { colors } = useTheme<Theme>();
 
   const { control, handleSubmit } = useForm<ValidationSchemaType>({
     resolver: zodResolver(validationSchema),
@@ -76,7 +77,7 @@ const SignIn = () => {
                 transform: [{ translateY: vs(-25) }],
               }).duration(600)}
             >
-              <Feather name="user" color={Colors.primary} size={IconSize.xl} />
+              <Feather name="user" color={colors.primary} size={IconSize.xl} />
             </Animated.View>
             <Animated.View
               entering={FadeInUp.withInitialValues({
@@ -118,13 +119,13 @@ const SignIn = () => {
                 borderRadius: ms(18),
               }}
               style={{
-                backgroundColor: Colors.lightBackground,
+                backgroundColor: colors.secBackground,
               }}
               right={
                 <TextInput.Affix
                   text="+962"
                   textStyle={{
-                    color: Colors.primary,
+                    color: colors.primary,
                   }}
                 />
               }

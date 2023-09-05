@@ -36,6 +36,7 @@ const login = async (code: string, verificationId: string) => {
         ...user,
         name: doc.data().name,
         phoneNumber: doc.data().phoneNumber,
+        nationalId: doc.data().nationalId,
       };
     });
     return userWithData;
@@ -50,7 +51,9 @@ export const verifyCodeMutation = () => {
       code: string;
       verificationId: string;
       name: string;
-    }) => verifyCode(data.code, data.verificationId, data.name),
+      nationalId: string;
+    }) =>
+      verifyCode(data.code, data.verificationId, data.name, data.nationalId),
     onError: (error: any) => {
       useStore.setState({ snackbarText: error.message });
     },
@@ -59,7 +62,8 @@ export const verifyCodeMutation = () => {
 const verifyCode = async (
   code: string,
   verificationId: string,
-  name: string
+  name: string,
+  nationalId: string
 ) => {
   try {
     const credential = PhoneAuthProvider.credential(verificationId, code);
@@ -70,9 +74,15 @@ const verifyCode = async (
       uid: user.uid,
       name: name,
       phoneNumber: user.phoneNumber,
+      nationalId: nationalId,
       createdAt: new Date(),
     });
-    const userWithData = { ...user, name: name, phoneNumber: user.phoneNumber };
+    const userWithData = {
+      ...user,
+      name: name,
+      phoneNumber: user.phoneNumber,
+      nationalId: nationalId,
+    };
     return userWithData;
   } catch (error: any) {
     throw new Error(error.message);

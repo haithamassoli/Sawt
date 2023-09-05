@@ -35,7 +35,7 @@ const HomeScreen = () => {
           height={vs(60)}
         >
           <ReText variant="TitleMedium" fontFamily="CairoBold" color="primary">
-            أهلا وسهلاً {user?.name}
+            أهلا وسهلاً {user?.name.split(" ")[0]}
           </ReText>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Feather name="menu" size={ms(24)} color={colors.text} />
