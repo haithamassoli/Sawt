@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native";
+import { Linking, TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Divider, Drawer } from "react-native-paper";
@@ -96,7 +96,11 @@ const CustomDrawer = (props: any) => {
           </Box>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => {
+            Linking.openURL(
+              "https://play.google.com/store/apps/details?id=com.haithamassoli.sawt"
+            );
+          }}
           style={{ paddingVertical: vs(16) }}
         >
           <Box flexDirection={"row"} alignItems={"center"}>

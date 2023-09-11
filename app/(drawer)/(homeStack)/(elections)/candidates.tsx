@@ -2,8 +2,9 @@ import Snackbar from "@components/snackbar";
 import CustomButton from "@components/ui/customButton";
 import { Feather } from "@expo/vector-icons";
 import { vice } from "@src/data/vice";
+import Colors from "@styles/colors";
 import { Box, ReText } from "@styles/theme";
-import { getDataFromStorage, storeDataToStorage, width } from "@utils/helper";
+import { getDataFromStorage, width } from "@utils/helper";
 import { hs, ms, vs } from "@utils/platform";
 import { useStore } from "@zustand/store";
 import { Image } from "expo-image";
@@ -52,7 +53,9 @@ const CandidatesScreen = () => {
           visible={visible}
           onDismiss={hideModal}
           contentContainerStyle={{
-            backgroundColor: isDark ? "black6" : "white",
+            backgroundColor: isDark
+              ? Colors.darkBackgroundSec
+              : Colors.lightBackgroundSec,
             paddingVertical: vs(16),
             paddingHorizontal: hs(16),
             marginHorizontal: hs(16),
@@ -151,6 +154,7 @@ const CandidatesScreen = () => {
       <TouchableOpacity onPress={onVote}>
         <Image
           source={require("@assets/images/icons/vote.png")}
+          transition={400}
           contentFit="contain"
           style={{
             width: ms(80),

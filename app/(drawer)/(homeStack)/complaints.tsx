@@ -23,6 +23,7 @@ import Colors from "@styles/colors";
 
 const ComplaintsScreen = () => {
   const [imageList, pickImage, isLoadingImage] = useImagePicker();
+  const { isDark } = useStore();
   const { control, handleSubmit, reset } =
     useForm<validationComplaintsSchemaType>({
       resolver: zodResolver(validationComplaintsSchema),
@@ -84,7 +85,9 @@ const ComplaintsScreen = () => {
               textAlignVertical="top"
               outlineStyle={{
                 borderRadius: ms(18),
-                backgroundColor: Colors.lightBackground,
+                backgroundColor: isDark
+                  ? Colors.darkBackground
+                  : Colors.lightBackground,
               }}
               style={{
                 width: "100%",

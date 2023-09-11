@@ -46,6 +46,9 @@ const HomeScreen = () => {
           entering={FadeInUp.withInitialValues({
             transform: [{ translateY: vs(-25) }],
           }).duration(600)}
+          style={{
+            marginHorizontal: ms(16),
+          }}
         >
           <ImagesCarousel
             images={[
@@ -62,7 +65,7 @@ const HomeScreen = () => {
           flexWrap="wrap"
           gap="vs"
           style={{
-            marginTop: vs(100),
+            marginTop: vs(64),
           }}
         >
           {homeIcons.map((item, index) => (

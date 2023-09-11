@@ -16,6 +16,7 @@ import { vice } from "@src/data/vice";
 import Snackbar from "@components/snackbar";
 import { Modal, Portal } from "react-native-paper";
 import { useState } from "react";
+import Colors from "@styles/colors";
 
 const ValidationScreen = () => {
   const { isDark, user } = useStore();
@@ -45,7 +46,7 @@ const ValidationScreen = () => {
       user: userWithElectoralNumber,
       snackbarText: "تم التصويت بنجاح",
     });
-    router.replace("/user-info");
+    router.replace("/");
   };
 
   return (
@@ -57,7 +58,9 @@ const ValidationScreen = () => {
             visible={visible}
             onDismiss={hideModal}
             contentContainerStyle={{
-              backgroundColor: isDark ? "black6" : "white",
+              backgroundColor: isDark
+                ? Colors.darkBackgroundSec
+                : Colors.lightBackgroundSec,
               paddingVertical: vs(16),
               paddingHorizontal: hs(16),
               marginHorizontal: hs(16),
