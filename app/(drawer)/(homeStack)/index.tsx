@@ -4,7 +4,7 @@ import { useNavigation, router } from "expo-router";
 import ImagesCarousel from "@components/imagesCarousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
-import { ms, vs } from "@utils/platform";
+import { hs, ms, vs } from "@utils/platform";
 import { useTheme } from "@shopify/restyle";
 import { Image } from "expo-image";
 import { homeIcons } from "@src/data/homeIcons";
@@ -26,46 +26,50 @@ const HomeScreen = () => {
       }}
     >
       <Snackbar />
-      <ScrollView>
+      <Box
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        marginHorizontal="hm"
+        height={vs(60)}
+      >
+        <ReText variant="TitleMedium" fontFamily="CairoBold" color="primary">
+          أهلا وسهلاً {user?.name.split(" ")[0]}
+        </ReText>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Feather name="menu" size={ms(24)} color={colors.text} />
+        </TouchableOpacity>
+      </Box>
+      <Box marginTop="vxs" />
+      <Animated.View
+        entering={FadeInUp.withInitialValues({
+          transform: [{ translateY: vs(-25) }],
+        }).duration(600)}
+        style={{
+          marginHorizontal: hs(16),
+        }}
+      >
+        <ImagesCarousel
+          images={[
+            require("@assets/images/carousel/1.png"),
+            require("@assets/images/carousel/2.png"),
+            require("@assets/images/carousel/3.png"),
+          ]}
+        />
+      </Animated.View>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Box
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          marginHorizontal="hm"
-          height={vs(60)}
-        >
-          <ReText variant="TitleMedium" fontFamily="CairoBold" color="primary">
-            أهلا وسهلاً {user?.name.split(" ")[0]}
-          </ReText>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Feather name="menu" size={ms(24)} color={colors.text} />
-          </TouchableOpacity>
-        </Box>
-        <Box marginTop="vxs" />
-        <Animated.View
-          entering={FadeInUp.withInitialValues({
-            transform: [{ translateY: vs(-25) }],
-          }).duration(600)}
-          style={{
-            marginHorizontal: ms(16),
-          }}
-        >
-          <ImagesCarousel
-            images={[
-              require("@assets/images/carousel/2.png"),
-              require("@assets/images/carousel/2.png"),
-              require("@assets/images/carousel/2.png"),
-            ]}
-          />
-        </Animated.View>
-        <Box
-          flex={1}
           flexDirection="row"
           justifyContent="space-evenly"
           flexWrap="wrap"
-          gap="vs"
           style={{
-            marginTop: vs(64),
+            gap: ms(12),
           }}
         >
           {homeIcons.map((item, index) => (
