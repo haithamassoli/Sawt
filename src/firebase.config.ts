@@ -11,22 +11,13 @@ import { getFirestore } from "firebase/firestore";
 //   persistence: getReactNativePersistence(AsyncStorage);
 // });
 
-const {
-  apiKey,
-  authDomain,
-  projectId,
-  storageBucket,
-  messagingSenderId,
-  appId,
-} = Constants?.expoConfig?.extra?.firebase;
-
 export const firebaseConfig = {
-  apiKey: apiKey,
-  authDomain: authDomain,
-  projectId: projectId,
-  storageBucket: storageBucket,
-  messagingSenderId: messagingSenderId,
-  appId: appId,
+  apiKey: "AIzaSyC9EhXED9zGPNbS66gGlMKH7rgEBtVu5x8",
+  authDomain: "sawt-jo.firebaseapp.com",
+  projectId: "sawt-jo",
+  storageBucket: "sawt-jo.appspot.com",
+  messagingSenderId: "538339777554",
+  appId: "1:538339777554:web:ef5efccf3ef1b36dcd0ccb",
 };
 
 const app = initializeApp(firebaseConfig);

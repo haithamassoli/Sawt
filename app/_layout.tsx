@@ -37,12 +37,6 @@ export {
   ErrorBoundary,
 } from "expo-router";
 
-if (Platform.OS === "android") {
-  if (UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -72,23 +66,23 @@ const getTheme = async () => {
   }
 };
 
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.allowFontScaling = false;
+
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+ReText.defaultProps = ReText.defaultProps || {};
+ReText.defaultProps.allowFontScaling = false;
+
+ScrollView.defaultProps = ScrollView.defaultProps || {};
+ScrollView.defaultProps.showsVerticalScrollIndicator = false;
+ScrollView.defaultProps.showsHorizontalScrollIndicator = false;
+
+FlashList.defaultProps = FlashList.defaultProps || {};
+FlashList.defaultProps.showsVerticalScrollIndicator = false;
+FlashList.defaultProps.showsHorizontalScrollIndicator = false;
+
 export default function RootLayout() {
-  TextInput.defaultProps = TextInput.defaultProps || {};
-  TextInput.defaultProps.allowFontScaling = false;
-
-  Text.defaultProps = Text.defaultProps || {};
-  Text.defaultProps.allowFontScaling = false;
-  ReText.defaultProps = ReText.defaultProps || {};
-  ReText.defaultProps.allowFontScaling = false;
-
-  ScrollView.defaultProps = ScrollView.defaultProps || {};
-  ScrollView.defaultProps.showsVerticalScrollIndicator = false;
-  ScrollView.defaultProps.showsHorizontalScrollIndicator = false;
-
-  FlashList.defaultProps = FlashList.defaultProps || {};
-  FlashList.defaultProps.showsVerticalScrollIndicator = false;
-  FlashList.defaultProps.showsHorizontalScrollIndicator = false;
-
   const segments = useSegments();
   const rootNavigationState = useRootNavigationState();
 
